@@ -1,3 +1,15 @@
 <mat-toolbar>
-  <span>My Chat</span>
+  <div fxLayoutGap="15px" fxLayoutAlign="center center" class="start">
+    <button (click)="toggleSidenav()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>My Chat</span>
+  </div>
+  <div fxLayoutGap="15px" fxLayoutAlign="center center" class="end">
+    <button mat-icon-button><mat-icon>add</mat-icon></button>
+    <button
+      mat-icon-button
+      [ngStyle]="{ background: 'url(' + profileImage + ')' }"
+    ></button>
+  </div>
 </mat-toolbar>

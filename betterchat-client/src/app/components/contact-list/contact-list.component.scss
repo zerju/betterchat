@@ -1,0 +1,22 @@
+.contacts {
+  width: 100%;
+  .contact {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    img {
+      height: 40px;
+      width: 40px;
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: 50%;
+    }
+    .online-status {
+      height: 8px;
+      width: 8px;
+      min-width: 8px;
+      min-height: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+  }
+}
