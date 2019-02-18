@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { CloseSidebar } from './../../core/actions/layout.action';
 
 @Component({
   selector: 'app-contact-list',
@@ -8,12 +10,14 @@ import { Component, OnInit } from '@angular/core';
 export class ContactListComponent implements OnInit {
   contactList = [
     {
-      name: 'Johny',
+      id: '1',
+      name: 'Johny 1231 312 3123 12312',
       image:
         'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4256ef737a6b7fb0ee2533bee81980b9515a927f.jpg',
       online: true
     },
     {
+      id: '2',
       name: 'Teo',
       image:
         'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4256ef737a6b7fb0ee2533bee81980b9515a927f.jpg',
@@ -21,7 +25,11 @@ export class ContactListComponent implements OnInit {
     }
   ];
 
-  constructor() {}
+  constructor(private store: Store) {}
 
   ngOnInit() {}
+
+  openChat(personId: string) {
+    this.store.dispatch(new CloseSidebar());
+  }
 }

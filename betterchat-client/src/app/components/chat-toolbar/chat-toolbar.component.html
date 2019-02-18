@@ -1,0 +1,11 @@
+<mat-toolbar fxLayoutGap="15px">
+  <img [src]="contact.image" />
+  <p>{{ contact.name }}</p>
+  <div
+    class="online-status"
+    [ngStyle]="{ background: contact.online ? 'green' : 'transparent' }"
+  ></div>
+  <button mat-icon-button>
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</mat-toolbar>

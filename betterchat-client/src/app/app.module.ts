@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from './../environments/environment';
 import { ComponentsModule } from './components/components.module';
 import { LayoutState } from 'src/app/core/state/layout.state';
+import { PlatformState } from 'src/app/core/state/platform.state';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +17,7 @@ import { LayoutState } from 'src/app/core/state/layout.state';
     AppRoutingModule,
     BrowserAnimationsModule,
     ComponentsModule,
-    NgxsModule.forRoot([LayoutState], {
+    NgxsModule.forRoot([LayoutState, PlatformState], {
       developmentMode: !environment.production
     })
   ],

@@ -8,11 +8,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ContactListComponent } from './contact-list/contact-list.component';
+import { ChatScreenComponent } from './chat-screen/chat-screen.component';
+import { ChatToolbarComponent } from './chat-toolbar/chat-toolbar.component';
+import { ChatInputBoxComponent } from './chat-input-box/chat-input-box.component';
 
 const COMPONENTS: any[] = [
   ToolbarComponent,
   LayoutComponent,
-  ContactListComponent
+  ContactListComponent,
+  ChatScreenComponent,
+  ChatToolbarComponent,
+  ChatInputBoxComponent
 ];
 
 @NgModule({

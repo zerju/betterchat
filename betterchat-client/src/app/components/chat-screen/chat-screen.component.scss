@@ -1,0 +1,8 @@
+@import '../../../variables.scss';
+
+.messages {
+  height: calc(100vh - 192px);
+  @media #{$mobile} {
+    height: calc(100vh - 176px);
+  }
+}

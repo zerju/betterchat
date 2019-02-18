@@ -3,16 +3,16 @@
     class="contact"
     fxLayoutAlign="space-between center"
     fxLayout="row"
-    fxLayoutGap="5px"
+    fxLayoutGap="10px"
     *ngFor="let contact of contactList"
   >
-    <img fxFlex="20" [src]="contact.image" />
-    <p fxFlex="55">{{ contact.name }}</p>
+    <img fxFlex="15" [src]="contact.image" />
+    <p (click)="openChat(contact.id)" fxFlex="65">{{ contact.name }}</p>
     <div
       fxFlex="2"
       class="online-status"
       [ngStyle]="{ background: contact.online ? 'green' : 'transparent' }"
     ></div>
-    <button fxFlex="23" mat-icon-button><mat-icon>more_vert</mat-icon></button>
+    <button fxFlex="15" mat-icon-button><mat-icon>more_vert</mat-icon></button>
   </div>
 </div>

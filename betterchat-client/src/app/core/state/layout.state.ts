@@ -1,5 +1,9 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { ToggleSidebar } from './../actions/layout.action';
+import {
+  ToggleSidebar,
+  OpenSidebar,
+  CloseSidebar
+} from './../actions/layout.action';
 
 export class LayoutStateModel {
   sidenavOpen: boolean;
@@ -15,5 +19,13 @@ export class LayoutState {
   toggle(context: StateContext<LayoutStateModel>) {
     const state = context.getState();
     context.patchState({ sidenavOpen: !state.sidenavOpen });
+  }
+  @Action(OpenSidebar)
+  openSidebar(context: StateContext<LayoutStateModel>) {
+    context.patchState({ sidenavOpen: true });
+  }
+  @Action(CloseSidebar)
+  closeSidebar(context: StateContext<LayoutStateModel>) {
+    context.patchState({ sidenavOpen: false });
   }
 }

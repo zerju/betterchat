@@ -1,7 +1,14 @@
+@import '../../../variables.scss';
 mat-sidenav {
-  width: 200px;
+  width: 300px;
   height: calc(100vh - 64px);
+  @media #{$mobile} {
+    height: calc(100vh - 56px);
+  }
 }
 mat-sidenav-content {
   height: calc(100vh - 64px);
+  @media #{$mobile} {
+    height: calc(100vh - 56px);
+  }
 }
