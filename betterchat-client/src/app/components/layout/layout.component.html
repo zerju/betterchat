@@ -1,6 +1,8 @@
 <app-toolbar></app-toolbar>
 <mat-sidenav-container>
-  <mat-sidenav mode="side" [opened]="sidenavState$ | async"
+  <mat-sidenav
+    [mode]="onMobile ? 'over' : 'side'"
+    [opened]="sidenavState$ | async"
     ><app-contact-list></app-contact-list
   ></mat-sidenav>
   <mat-sidenav-content><ng-content></ng-content></mat-sidenav-content>

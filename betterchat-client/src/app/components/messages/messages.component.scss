@@ -1,0 +1,47 @@
+@import '../../../variables.scss';
+
+.message-wrapper {
+  img {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    &.me {
+      margin-right: calc(#{$page-padding} / 2);
+      order: 1;
+    }
+    &.others {
+      margin-left: calc(#{$page-padding} / 2);
+    }
+  }
+  .message {
+    padding: calc(#{$page-padding} / 2);
+    padding-bottom: 0;
+    max-width: 60vw;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    &.me {
+      margin-left: auto;
+      margin-right: calc(#{$page-padding} / 2);
+      background-color: #3f51b5;
+      color: white;
+      .message-date {
+        margin-left: auto;
+      }
+    }
+    &.others {
+      margin-left: calc(#{$page-padding} / 2);
+      margin-right: auto;
+    }
+    .message-text {
+      margin: 0;
+    }
+    .message-date {
+      font-size: 0.7em;
+      margin-bottom: calc(#{$page-padding} / 2);
+      margin-top: 10px;
+      width: fit-content;
+    }
+  }
+}

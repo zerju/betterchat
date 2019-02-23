@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
   <div fxLayoutGap="15px" fxLayoutAlign="center center" class="start">
     <button (click)="toggleSidenav()" mat-icon-button>
       <mat-icon>menu</mat-icon>
@@ -6,10 +6,32 @@
     <span>My Chat</span>
   </div>
   <div fxLayoutGap="15px" fxLayoutAlign="center center" class="end">
-    <button mat-icon-button><mat-icon>add</mat-icon></button>
+    <button mat-icon-button [matMenuTriggerFor]="addMenu">
+      <mat-icon>add</mat-icon>
+    </button>
     <button
       mat-icon-button
-      [ngStyle]="{ background: 'url(' + profileImage + ')' }"
+      [matMenuTriggerFor]="accountMenu"
+      [ngStyle]="{ background: 'url(' + me.image + ')' }"
     ></button>
   </div>
 </mat-toolbar>
+<mat-menu #addMenu="matMenu">
+  <button mat-menu-item><mat-icon>person_add</mat-icon>Add friend</button>
+  <button mat-menu-item><mat-icon>add_comment</mat-icon>New Chat</button>
+  <button mat-menu-item><mat-icon>group</mat-icon>New Group</button>
+  <button mat-menu-item>New Anonymous Chat</button>
+</mat-menu>
+<mat-menu #accountMenu="matMenu">
+  <button mat-menu-item>Profile</button>
+  <button fxLayoutAlign="center center" fxLayout="row" mat-menu-item>
+    Set offline
+    <div
+      class="online-status"
+      [ngStyle]="{ background: me.online ? 'green' : 'transparent' }"
+    ></div>
+  </button>
+  <button mat-menu-item>Settings</button>
+  <button mat-menu-item>Logout</button>
+  <button mat-menu-item>About</button>
+</mat-menu>

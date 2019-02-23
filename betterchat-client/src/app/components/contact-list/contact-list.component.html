@@ -13,6 +13,13 @@
       class="online-status"
       [ngStyle]="{ background: contact.online ? 'green' : 'transparent' }"
     ></div>
-    <button fxFlex="15" mat-icon-button><mat-icon>more_vert</mat-icon></button>
+    <button [matMenuTriggerFor]="contactMore" fxFlex="15" mat-icon-button>
+      <mat-icon>more_vert</mat-icon>
+    </button>
   </div>
 </div>
+<mat-menu #contactMore="matMenu">
+  <button mat-menu-item>
+    <mat-icon>person_add_disabled </mat-icon>Remove from contacts
+  </button>
+</mat-menu>

@@ -15,8 +15,11 @@ export class LayoutComponent implements OnInit {
   @Select(LayoutState.getSidenavState) sidenavState$: Observable<boolean>;
   @Select(PlatformState.isMobile) isMobileState$: Observable<boolean>;
 
+  onMobile: boolean;
+
   constructor(private store: Store) {
     this.isMobileState$.subscribe(isMobile => {
+      this.onMobile = isMobile;
       if (isMobile) {
         this.store.dispatch(new CloseSidebar());
       }

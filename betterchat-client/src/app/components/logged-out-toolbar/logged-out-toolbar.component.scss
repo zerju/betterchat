@@ -1,0 +1,18 @@
+@import '../../../variables';
+
+.seperator {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+.buttons {
+  margin-left: auto;
+  margin-right: 0;
+}
+.extra-info {
+  display: inherit;
+}
+@media #{$mobile} {
+  .extra-info {
+    display: none;
+  }
+}

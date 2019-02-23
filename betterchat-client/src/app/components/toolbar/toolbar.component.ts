@@ -8,9 +8,13 @@ import { ToggleSidebar } from 'src/app/core/actions/layout.action';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-  profileImage =
-    'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4256ef737a6b7fb0ee2533bee81980b9515a927f.jpg';
-
+  me = {
+    id: '1',
+    name: 'Johny 1231 312 3123 12312',
+    image:
+      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4256ef737a6b7fb0ee2533bee81980b9515a927f.jpg',
+    online: true
+  };
   constructor(private store: Store) {}
 
   ngOnInit() {}

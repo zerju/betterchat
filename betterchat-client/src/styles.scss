@@ -1,5 +1,11 @@
 @import 'variables';
-
+// Include the default theme styles.
+.default-theme {
+  @include angular-material-theme($candy-app-theme);
+}
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+}
 *,
 *:before,
 *:after {

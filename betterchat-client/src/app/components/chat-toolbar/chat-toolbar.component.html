@@ -5,7 +5,13 @@
     class="online-status"
     [ngStyle]="{ background: contact.online ? 'green' : 'transparent' }"
   ></div>
-  <button mat-icon-button>
+  <button [matMenuTriggerFor]="moreChat" mat-icon-button>
     <mat-icon>more_vert</mat-icon>
   </button>
 </mat-toolbar>
+<mat-menu #moreChat="matMenu">
+  <button mat-menu-item><mat-icon>star_rate</mat-icon>Add to favorites</button>
+  <button mat-menu-item>
+    <mat-icon>person_add_disabled </mat-icon>Remove from contacts
+  </button>
+</mat-menu>

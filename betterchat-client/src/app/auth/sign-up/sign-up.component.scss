@@ -1,0 +1,33 @@
+@import '../../../variables';
+
+.login-form {
+  width: 500px;
+  max-width: 80vw;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  justify-content: center;
+  align-items: center;
+  mat-form-field {
+    width: 70%;
+  }
+  a {
+    font-size: 0.8em;
+    margin-top: 12px;
+    color: $primary;
+    &:visited {
+      color: $primary;
+    }
+  }
+}
+
+.page-wrapper {
+  height: calc(100% - 64px);
+  @media #{$mobile} {
+    height: calc(100% - 56px);
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

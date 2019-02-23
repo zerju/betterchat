@@ -11,6 +11,13 @@ import { ContactListComponent } from './contact-list/contact-list.component';
 import { ChatScreenComponent } from './chat-screen/chat-screen.component';
 import { ChatToolbarComponent } from './chat-toolbar/chat-toolbar.component';
 import { ChatInputBoxComponent } from './chat-input-box/chat-input-box.component';
+import { MessagesComponent } from './messages/messages.component';
+import { DirectivesModule } from './../directives/directives.module';
+import { PipesModule } from '../pipes/pipes.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { LoggedOutToolbarComponent } from './logged-out-toolbar/logged-out-toolbar.component';
+import { RouterModule } from '@angular/router';
 
 const COMPONENTS: any[] = [
   ToolbarComponent,
@@ -18,7 +25,9 @@ const COMPONENTS: any[] = [
   ContactListComponent,
   ChatScreenComponent,
   ChatToolbarComponent,
-  ChatInputBoxComponent
+  ChatInputBoxComponent,
+  MessagesComponent,
+  LoggedOutToolbarComponent
 ];
 
 @NgModule({
@@ -29,7 +38,12 @@ const COMPONENTS: any[] = [
     FlexLayoutModule,
     MatButtonModule,
     MatIconModule,
-    MatSidenavModule
+    MatSidenavModule,
+    DirectivesModule,
+    PipesModule,
+    MatTooltipModule,
+    MatMenuModule,
+    RouterModule
   ],
   exports: [COMPONENTS]
 })

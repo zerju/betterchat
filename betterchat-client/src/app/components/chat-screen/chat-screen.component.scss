@@ -1,8 +1,12 @@
 @import '../../../variables.scss';
 
 .messages {
+  padding-top: #{$page-padding};
   height: calc(100vh - 192px);
+  max-height: calc(100vh - 192px);
+  overflow: auto;
   @media #{$mobile} {
     height: calc(100vh - 176px);
+    max-height: calc(100vh - 176px);
   }
 }

@@ -1,0 +1,25 @@
+<app-logged-out-toolbar pageName="Sign Up"></app-logged-out-toolbar>
+<div class="page-wrapper">
+  <div class="login-form mat-elevation-z4">
+    <h1>Sign Up</h1>
+    <mat-form-field>
+      <input matInput placeholder="Username" name="username" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Email" name="email" type="email" />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" type="password" name="password" />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Repeat Password"
+        type="password"
+        name="password"
+      />
+    </mat-form-field>
+    <button mat-raised-button>Sign up</button>
+    <a routerLink="/auth/login">Already have an account?</a>
+  </div>
+</div>

@@ -13,3 +13,12 @@ button {
     opacity: 0.8;
   }
 }
+.online-status {
+  height: 8px;
+  width: 8px;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  margin-left: 10px;
+}
