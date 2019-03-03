@@ -1,2 +1,2 @@
 # betterchat
-This is a better chat
+Angular. This is a better chat than previous one.
