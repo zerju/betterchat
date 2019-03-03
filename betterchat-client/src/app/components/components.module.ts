@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { LoggedOutToolbarComponent } from './logged-out-toolbar/logged-out-toolbar.component';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 const COMPONENTS: any[] = [
   ToolbarComponent,
@@ -43,7 +44,9 @@ const COMPONENTS: any[] = [
     PipesModule,
     MatTooltipModule,
     MatMenuModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [COMPONENTS]
 })

@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { ComponentsModule } from './../components/components.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [LoginComponent, SignUpComponent],
@@ -19,7 +20,9 @@ import { ComponentsModule } from './../components/components.module';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class AuthModule {}

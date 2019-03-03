@@ -1,0 +1,10 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "tibotva",
+  "database": "chat",
+  "entities": ["src/entity/**/*.ts"],
+  "synchronize": true
+}
