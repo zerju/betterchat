@@ -17,4 +17,11 @@ export class AuthService {
   async createUser(user: User) {
     await this.userRepository.insert(user);
   }
+
+  async usernameExists(username: string): Promise<number> {
+    return await this.userRepository.count({ username });
+  }
+  async emailExists(email: string): Promise<number> {
+    return await this.userRepository.count({ email });
+  }
 }

@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from './../../../environments/environment';
 import { of } from 'rxjs';
+import { Router } from "@angular/router";
+import { NgZone } from "@angular/core";
 
 export class AuthStateModel {
   user: IUser;
@@ -12,7 +14,7 @@ export class AuthStateModel {
 
 @State<AuthStateModel>({ name: 'auth' })
 export class AuthState {
-  constructor(private http: HttpClient) {}
+  constructor(private ngZone: NgZone, private http: HttpClient, private router: Router) {}
 
   @Action(RegisteruserAction)
   register(context: StateContext<AuthStateModel>, action: RegisteruserAction) {
@@ -20,7 +22,7 @@ export class AuthState {
       .post(environment.apiUrl + '/auth/register', action.userData)
       .pipe(
         tap(res => {
-          console.log(res);
+          this.ngZone.run(() => this.router.navigate(['auth','login']));
         }),
         catchError(err => of(err))
       )

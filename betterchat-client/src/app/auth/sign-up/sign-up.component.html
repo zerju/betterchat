@@ -4,23 +4,16 @@
     <div class="login-form mat-elevation-z4">
       <h1>Sign Up</h1>
       <mat-form-field>
-        <input
-          formControlName="username"
-          matInput
-          placeholder="Username"
-          name="username"
-        />
+        <input formControlName="username" matInput placeholder="Username" name="username" />
+        <mat-error *ngIf="username.errors?.exists">Username already taken</mat-error>
+        <mat-error *ngIf="username.errors?.required">Username is required</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input
-          formControlName="email"
-          matInput
-          placeholder="Email"
-          name="email"
-          type="email"
-        />
+        <input formControlName="email" matInput placeholder="Email" name="email" type="email" />
+        <mat-error *ngIf="email.errors?.exists">Email already taken</mat-error>
+        <mat-error *ngIf="email.errors?.required">Email is required</mat-error>
       </mat-form-field>
-      <div formGroupName="pwGroup">
+      <div formGroupName="pwGroup" class="form-field-group">
         <mat-form-field>
           <input
             matInput
@@ -29,6 +22,7 @@
             name="password"
             formControlName="password"
           />
+          <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
         </mat-form-field>
         <mat-form-field>
           <input
@@ -38,7 +32,9 @@
             name="password"
             formControlName="repeatPassword"
           />
+          <mat-error *ngIf="repeatPassword.errors?.required">Please repeat the password</mat-error>
         </mat-form-field>
+        <mat-error *ngIf="pwGroup.errors?.noMatch">Passwords must match</mat-error>
       </div>
       <button [disabled]="!registerForm.valid" type="submit" mat-raised-button>
         Sign up

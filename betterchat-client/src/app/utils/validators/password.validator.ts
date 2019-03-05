@@ -1,8 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 
-export function validatePassword(
-  control: AbstractControl
-): { [key: string]: boolean } | null {
+export function validatePassword(control: AbstractControl): { [key: string]: boolean } | null {
   const passwordControl = control.get('password');
   const confirmControl = control.get('repeatPassword');
 
@@ -13,5 +11,5 @@ export function validatePassword(
   if (passwordControl.value === confirmControl.value) {
     return null;
   }
-  return { match: true };
+  return { noMatch: true };
 }

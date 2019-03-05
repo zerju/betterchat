@@ -1,9 +1,12 @@
+import { HttpClient } from '@angular/common/http';
+import { existUsernameValidator } from './../../utils/validators/username-exists.validator';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { validatePassword } from './../../utils/validators/password.validator';
 import { Store } from '@ngxs/store';
 import { RegisteruserAction } from './../../core/actions/auth.action';
 import { IRegisterUser } from './../../core/models/register-user.model';
+import { existEmailValidator } from 'src/app/utils/validators/email-exists.validator';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,8 +15,12 @@ import { IRegisterUser } from './../../core/models/register-user.model';
 })
 export class SignUpComponent implements OnInit {
   registerForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    username: new FormControl('', [Validators.required], [existUsernameValidator(this.http)]),
+    email: new FormControl(
+      '',
+      [Validators.required, Validators.email],
+      [existEmailValidator(this.http)]
+    ),
     pwGroup: new FormGroup(
       {
         password: new FormControl('', [Validators.required]),
@@ -23,7 +30,27 @@ export class SignUpComponent implements OnInit {
     )
   });
 
-  constructor(private store: Store) {}
+  get username() {
+    return this.registerForm.get('username');
+  }
+
+  get email() {
+    return this.registerForm.get('email');
+  }
+
+  get password() {
+    return this.registerForm.get('pwGroup').get('password');
+  }
+
+  get repeatPassword() {
+    return this.registerForm.get('pwGroup').get('repeatPassword');
+  }
+
+  get pwGroup() {
+    return this.registerForm.get('pwGroup');
+  }
+
+  constructor(private store: Store, private http: HttpClient) {}
 
   ngOnInit() {}
 
@@ -33,7 +60,6 @@ export class SignUpComponent implements OnInit {
       email: this.registerForm.value.email,
       password: this.registerForm.value.pwGroup.password
     };
-    console.log(user);
     this.store.dispatch(new RegisteruserAction(user));
   }
 }
