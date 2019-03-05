@@ -24,10 +24,10 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @Column()
+  @Column({nullable: true})
   image: string;
 
-  @Column()
+  @Column({default: false})
   isOnline: boolean;
 
   @OneToMany(
