@@ -1,5 +1,8 @@
+import { GetSavedUser } from './core/actions/auth.action';
+import { Store } from '@ngxs/store';
 import { Component, OnInit } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { IUser } from './core/models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -9,15 +12,21 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 export class AppComponent implements OnInit {
   themeClass: string;
 
-  constructor(private overlayContainer: OverlayContainer) {}
+  constructor(private overlayContainer: OverlayContainer, private store: Store) {}
 
   ngOnInit() {
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user: IUser = JSON.parse(userString);
+      console.log(user);
+      this.store.dispatch(new GetSavedUser(user));
+    }
+
     this.themeClass = 'default-theme';
     document.body.classList.add(this.themeClass);
-    const overlayContainerClasses = this.overlayContainer.getContainerElement()
-      .classList;
-    const themeClassesToRemove = Array.from(overlayContainerClasses).filter(
-      (item: string) => item.includes('-theme')
+    const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
+    const themeClassesToRemove = Array.from(overlayContainerClasses).filter((item: string) =>
+      item.includes('-theme')
     );
     if (themeClassesToRemove.length) {
       overlayContainerClasses.remove(...themeClassesToRemove);

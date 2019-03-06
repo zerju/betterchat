@@ -24,11 +24,14 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   image: string;
 
-  @Column({default: false})
+  @Column({ default: false })
   isOnline: boolean;
+
+  @Column({ nullable: true })
+  jwtToken: string;
 
   @OneToMany(
     type => UserRelationship,

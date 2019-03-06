@@ -1,3 +1,4 @@
+import { LoginDto } from './dto/login.dto';
 import { UserExistsDto } from './dto/user-exists.dto';
 import {
   Controller,
@@ -7,6 +8,7 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
@@ -60,6 +62,32 @@ export class AuthController {
       throw new HttpException(
         'Internal Server Error',
         HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post('/login')
+  @HttpCode(200)
+  async login(@Body() login: LoginDto) {
+    const user = await this.authService.getUser(login.username);
+    if (user) {
+      const matches = await bcrypt.compare(login.password, user.password);
+      if (matches) {
+        delete user.password;
+        const jwt = await this.authService.generateJwt(user);
+        this.authService.saveJwtToUser(user, jwt);
+        user.jwtToken = jwt;
+        return { jwt };
+      } else {
+        throw new HttpException(
+          'Wrong username or password',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+    } else {
+      throw new HttpException(
+        'Wrong username or password',
+        HttpStatus.UNAUTHORIZED,
       );
     }
   }
