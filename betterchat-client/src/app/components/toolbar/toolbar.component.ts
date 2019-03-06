@@ -1,3 +1,4 @@
+import { LogoutUserAction } from './../../core/actions/auth.action';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ToggleSidebar } from 'src/app/core/actions/layout.action';
@@ -21,5 +22,9 @@ export class ToolbarComponent implements OnInit {
 
   toggleSidenav() {
     this.store.dispatch(new ToggleSidebar());
+  }
+
+  logout() {
+    this.store.dispatch(new LogoutUserAction());
   }
 }

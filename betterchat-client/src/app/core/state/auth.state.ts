@@ -1,6 +1,7 @@
+import { LogoutUserAction } from './../actions/auth.action';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { IUser } from '../models/user.model';
-import { RegisteruserAction, LoginUserAction, GetSavedUser } from '../actions/auth.action';
+import { RegisteruserAction, LoginUserAction, GetSavedUserAction } from '../actions/auth.action';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from './../../../environments/environment';
@@ -54,8 +55,15 @@ export class AuthState {
       .subscribe();
   }
 
-  @Action(GetSavedUser)
-  setUserData(context: StateContext<AuthStateModel>, action: GetSavedUser) {
+  @Action(GetSavedUserAction)
+  setUserData(context: StateContext<AuthStateModel>, action: GetSavedUserAction) {
     context.patchState({ user: action.userData });
+  }
+
+  @Action(LogoutUserAction)
+  LogoutUserAction(context: StateContext<AuthStateModel>) {
+    localStorage.removeItem('user');
+    context.patchState({ user: null });
+    this.ngZone.run(() => this.router.navigate(['auth', 'login']));
   }
 }

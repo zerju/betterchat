@@ -1,4 +1,4 @@
-import { GetSavedUser } from './core/actions/auth.action';
+import { GetSavedUserAction } from './core/actions/auth.action';
 import { Store } from '@ngxs/store';
 import { Component, OnInit } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -18,8 +18,7 @@ export class AppComponent implements OnInit {
     const userString = localStorage.getItem('user');
     if (userString) {
       const user: IUser = JSON.parse(userString);
-      console.log(user);
-      this.store.dispatch(new GetSavedUser(user));
+      this.store.dispatch(new GetSavedUserAction(user));
     }
 
     this.themeClass = 'default-theme';

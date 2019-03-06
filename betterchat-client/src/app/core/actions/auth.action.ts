@@ -11,7 +11,11 @@ export class LoginUserAction {
   constructor(public loginUserData: ILoginUser) {}
 }
 
-export class GetSavedUser {
+export class GetSavedUserAction {
   static readonly type = '[Auth] Get Saved User';
   constructor(public userData: IUser) {}
+}
+
+export class LogoutUserAction {
+  static readonly type = '[Auth] Logout User';
 }
