@@ -3,10 +3,12 @@ import { existUsernameValidator } from './../../utils/validators/username-exists
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { validatePassword } from './../../utils/validators/password.validator';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
 import { RegisteruserAction } from './../../core/actions/auth.action';
 import { IRegisterUser } from './../../core/models/register-user.model';
 import { existEmailValidator } from 'src/app/utils/validators/email-exists.validator';
+import { AuthState } from 'src/app/core/state/auth.state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,6 +16,8 @@ import { existEmailValidator } from 'src/app/utils/validators/email-exists.valid
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
+  @Select(AuthState.getApiError) loginError$: Observable<string>;
+
   registerForm = new FormGroup({
     username: new FormControl('', [Validators.required], [existUsernameValidator(this.http)]),
     email: new FormControl(

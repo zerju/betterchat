@@ -4,6 +4,7 @@
     <h1>Login</h1>
     <mat-form-field>
       <input formControlName="username" matInput placeholder="Username" name="username" />
+      <mat-error *ngIf="loginForm.get('username').errors?.required">Username is required</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input
@@ -13,7 +14,9 @@
         type="password"
         name="password"
       />
+      <mat-error *ngIf="loginForm.get('password').errors?.required">Password is required</mat-error>
     </mat-form-field>
+    <mat-error *ngIf="(loginError$ | async)">{{ loginError$ | async }}</mat-error>
     <button [disabled]="!loginForm.valid" (click)="login()" mat-raised-button>Login</button>
     <a routerLink="/auth/sign-up">Don't have an account?</a>
   </form>

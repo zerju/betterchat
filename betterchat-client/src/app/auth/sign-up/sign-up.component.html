@@ -34,7 +34,8 @@
           />
           <mat-error *ngIf="repeatPassword.errors?.required">Please repeat the password</mat-error>
         </mat-form-field>
-        <mat-error *ngIf="pwGroup.errors?.noMatch">Passwords must match</mat-error>
+        <mat-error *ngIf="pwGroup.errors?.noMatch">Passwords must match</mat-error
+        ><mat-error *ngIf="(loginError$ | async)">{{ loginError$ | async }}</mat-error>
       </div>
       <button [disabled]="!registerForm.valid" type="submit" mat-raised-button>
         Sign up

@@ -12,11 +12,12 @@ import * as jwt_decode from 'jwt-decode';
 
 export class AuthStateModel {
   user: IUser;
+  apiError: string;
 }
 
 const API_URL = environment.apiUrl;
 
-@State<AuthStateModel>({ name: 'auth' })
+@State<AuthStateModel>({ name: 'auth', defaults: { apiError: null, user: null } })
 export class AuthState {
   constructor(private ngZone: NgZone, private http: HttpClient, private router: Router) {}
 
@@ -27,15 +28,27 @@ export class AuthState {
     return state.user.jwtToken;
   }
 
+  @Selector() static getApiError(state: AuthStateModel) {
+    return state.apiError;
+  }
+
   @Action(RegisteruserAction)
   register(context: StateContext<AuthStateModel>, action: RegisteruserAction) {
     this.http
       .post(`${API_URL}/auth/register`, action.userData)
       .pipe(
         tap(res => {
+          context.patchState({ apiError: null });
           this.ngZone.run(() => this.router.navigate(['auth', 'login']));
         }),
-        catchError(err => of(err))
+        catchError(err => {
+          if (err.error.message) {
+            context.patchState({ apiError: err.error.message });
+          } else {
+            context.patchState({ apiError: err.statusText });
+          }
+          return of(err);
+        })
       )
       .subscribe();
   }
@@ -48,8 +61,16 @@ export class AuthState {
         tap(res => {
           const user = jwt_decode(res.jwt);
           localStorage.setItem('user', JSON.stringify(user));
-          context.patchState({ user });
+          context.patchState({ user, apiError: null });
           this.ngZone.run(() => this.router.navigate(['']));
+        }),
+        catchError(err => {
+          if (err.error.message) {
+            context.patchState({ apiError: err.error.message });
+          } else {
+            context.patchState({ apiError: err.statusText });
+          }
+          return of(err);
         })
       )
       .subscribe();

@@ -14,7 +14,11 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 
 const API_URL = environment.apiUrl;
-const PATHS_WITHOUT_TOKEN = [`${API_URL}/auth/login`, `${API_URL}/auth/register`];
+const PATHS_WITHOUT_TOKEN = [
+  `${API_URL}/auth/login`,
+  `${API_URL}/auth/register`,
+  `${API_URL}/auth/user-exists`
+];
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
