@@ -1,7 +1,9 @@
 export interface IUser {
   id: string;
   name: string;
-  online: boolean;
+  isOnline: boolean;
   image: string;
   jwtToken?: string;
+  iat?: number;
+  exp?: number;
 }

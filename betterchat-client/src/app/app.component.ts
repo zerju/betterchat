@@ -15,12 +15,6 @@ export class AppComponent implements OnInit {
   constructor(private overlayContainer: OverlayContainer, private store: Store) {}
 
   ngOnInit() {
-    const userString = localStorage.getItem('user');
-    if (userString) {
-      const user: IUser = JSON.parse(userString);
-      this.store.dispatch(new GetSavedUserAction(user));
-    }
-
     this.themeClass = 'default-theme';
     document.body.classList.add(this.themeClass);
     const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;

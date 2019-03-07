@@ -1,3 +1,4 @@
+import { IUser } from './../interfaces/user.interface';
 import { IJwtPayload } from './../interfaces/jwt-payload.interface';
 import { Injectable, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -32,8 +33,8 @@ export class AuthService {
     return await this.userRepository.findOne({ username });
   }
 
-  async generateJwt(user: User): Promise<string> {
-    const payload: IJwtPayload = user;
+  async generateJwt(user: IUser): Promise<string> {
+    const payload: IJwtPayload = { id: user.id, username: user.username };
     return this.jwtService.sign({ ...payload });
   }
 

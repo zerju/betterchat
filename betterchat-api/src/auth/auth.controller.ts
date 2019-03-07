@@ -77,7 +77,7 @@ export class AuthController {
         const jwt = await this.authService.generateJwt(user);
         this.authService.saveJwtToUser(user, jwt);
         user.jwtToken = jwt;
-        return { jwt };
+        return { user, jwt };
       } else {
         throw new HttpException(
           'Wrong username or password',

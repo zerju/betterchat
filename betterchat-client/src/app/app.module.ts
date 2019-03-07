@@ -12,6 +12,7 @@ import { LayoutState } from './core/state/layout.state';
 import { PlatformState } from './core/state/platform.state';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthState } from './core/state/auth.state';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
@@ -27,7 +28,8 @@ export const httpInterceptorProviders = [
     ComponentsModule,
     NgxsModule.forRoot([LayoutState, PlatformState, AuthState], {
       developmentMode: !environment.production
-    })
+    }),
+    NgxsStoragePluginModule.forRoot()
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

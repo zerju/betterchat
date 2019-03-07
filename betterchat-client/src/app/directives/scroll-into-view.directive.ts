@@ -1,10 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  Input,
-  OnInit,
-  AfterViewInit
-} from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, AfterViewInit } from '@angular/core';
 
 @Directive({
   selector: '[appScrollIntoView]'
@@ -19,7 +13,6 @@ export class ScrollIntoViewDirective implements AfterViewInit {
   constructor(private _el: ElementRef) {}
 
   ngAfterViewInit() {
-    console.log(this._scrollIntoView);
     if (this._scrollIntoView) {
       this._el.nativeElement.scrollIntoView(false);
     }

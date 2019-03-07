@@ -1,4 +1,5 @@
-import { LogoutUserAction } from './../actions/auth.action';
+import { IJwtResponse } from './../models/jwt-response.model';
+import { LogoutUserAction, UpdateUserAction } from './../actions/auth.action';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { IUser } from '../models/user.model';
 import { RegisteruserAction, LoginUserAction, GetSavedUserAction } from '../actions/auth.action';
@@ -17,6 +18,7 @@ export class AuthStateModel {
 
 const API_URL = environment.apiUrl;
 
+// AUTH STATE OR USER STATE - BOTH IN THE SAME STATE
 @State<AuthStateModel>({ name: 'auth', defaults: { apiError: null, user: null } })
 export class AuthState {
   constructor(private ngZone: NgZone, private http: HttpClient, private router: Router) {}
@@ -59,8 +61,11 @@ export class AuthState {
       .post<any>(`${API_URL}/auth/login`, action.loginUserData)
       .pipe(
         tap(res => {
-          const user = jwt_decode(res.jwt);
-          localStorage.setItem('user', JSON.stringify(user));
+          const user = res.user;
+          const jwt = jwt_decode(res.jwt);
+          user.jwToken = res.jwt;
+          user.iat = jwt.iat;
+          user.exp = jwt.exp;
           context.patchState({ user, apiError: null });
           this.ngZone.run(() => this.router.navigate(['']));
         }),
@@ -83,8 +88,23 @@ export class AuthState {
 
   @Action(LogoutUserAction)
   LogoutUserAction(context: StateContext<AuthStateModel>) {
-    localStorage.removeItem('user');
     context.patchState({ user: null });
     this.ngZone.run(() => this.router.navigate(['auth', 'login']));
+  }
+
+  @Action(UpdateUserAction)
+  updateUser(context: StateContext<AuthStateModel>, action: UpdateUserAction) {
+    const state = context.getState();
+    this.http
+      .put<any>(`${API_URL}/user/update`, action.user)
+      .pipe(
+        tap(res => {
+          let user = { ...state.user };
+          user = { ...user, ...res.user };
+          return context.patchState({ user });
+        }),
+        catchError(err => of(err))
+      )
+      .subscribe();
   }
 }

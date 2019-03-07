@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" *ngIf="me">
   <div fxLayoutGap="15px" fxLayoutAlign="center center" class="start">
     <button (click)="toggleSidenav()" mat-icon-button>
       <mat-icon>menu</mat-icon>
@@ -12,7 +12,7 @@
     <button
       mat-icon-button
       [matMenuTriggerFor]="accountMenu"
-      [ngStyle]="{ background: 'url(' + me.image + ')' }"
+      [ngStyle]="{ background: 'url(' + (me.image ? me.image : defaultImage) + ')' }"
     ></button>
   </div>
 </mat-toolbar>
@@ -24,11 +24,17 @@
 </mat-menu>
 <mat-menu #accountMenu="matMenu">
   <button mat-menu-item>Profile</button>
-  <button fxLayoutAlign="center center" fxLayout="row" mat-menu-item>
-    Set offline
+  <button
+    *ngIf="me"
+    (click)="toggleUserVisibility()"
+    fxLayoutAlign="center center"
+    fxLayout="row"
+    mat-menu-item
+  >
+    {{ me.isOnline ? "Set offline" : "Set online" }}
     <div
       class="online-status"
-      [ngStyle]="{ background: me.online ? 'green' : 'transparent' }"
+      [ngStyle]="{ background: me.isOnline ? 'green' : 'transparent' }"
     ></div>
   </button>
   <button mat-menu-item>Settings</button>
