@@ -8,14 +8,15 @@ import { HttpClient } from '@angular/common/http';
 
 const API_URL = environment.apiUrl;
 
-export function existEmailValidator(http: HttpClient, currentEmail?: string): AsyncValidatorFn {
+export function otfCheckPasswordValidator(http: HttpClient): AsyncValidatorFn {
   return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
     const value = control.value;
-    if (currentEmail && currentEmail === value) {
+    if (value == null || value === '') {
       return of(null);
     }
-    return http
-      .get<IUserExists>(`${API_URL}/auth/user-exists?email=${value}`)
-      .pipe(map((res: IUserExists) => (res.userExists ? { exists: value } : null)));
+    return http.post<any>(`${API_URL}/auth/check-password`, { password: value }).pipe(
+      map((res: any) => (res.correctPassword ? null : { incorrect: value })),
+      catchError(err => of(err))
+    );
   };
 }

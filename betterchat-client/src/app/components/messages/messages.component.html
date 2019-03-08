@@ -1,7 +1,7 @@
 <div *ngFor="let message of messages; let i = index; let last = last">
   <div [appScrollIntoView]="last" class="message-wrapper" fxLayout="row">
     <img
-      [src]="message.from.image"
+      [src]="message.from.image | missingImage"
       [ngClass]="message.from.id === me.id ? 'me' : 'others'"
       [appMessageImage]="messages"
       [index]="i"
@@ -9,7 +9,7 @@
     <div class="message" [ngClass]="message.from === me ? 'me' : 'others'">
       <p class="message-text">{{ message.text }}</p>
       <p [matTooltip]="message.date | timeAgo" class="message-date">
-        {{ message.date | date: 'dd/MM/yyyy HH:mm' }}
+        {{ message.date | date: "dd/MM/yyyy HH:mm" }}
       </p>
     </div>
   </div>

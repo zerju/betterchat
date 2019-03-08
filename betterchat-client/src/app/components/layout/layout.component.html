@@ -1,4 +1,4 @@
-<app-toolbar [me]="user$ | async"></app-toolbar>
+<app-toolbar (openProfileModal)="openProfileModal()" [me]="user$ | async"></app-toolbar>
 <mat-sidenav-container>
   <mat-sidenav [mode]="onMobile ? 'over' : 'side'" [opened]="sidenavState$ | async"
     ><app-contact-list></app-contact-list

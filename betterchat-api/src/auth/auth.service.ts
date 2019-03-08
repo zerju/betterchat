@@ -15,34 +15,74 @@ export class AuthService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+    try {
+      return await this.userRepository.find();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async createUser(user: User) {
-    await this.userRepository.insert(user);
+    try {
+      await this.userRepository.insert(user);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async usernameExists(username: string): Promise<number> {
-    return await this.userRepository.count({ username });
+    try {
+      return await this.userRepository.count({ username });
+    } catch (err) {
+      console.error(err);
+    }
   }
   async emailExists(email: string): Promise<number> {
-    return await this.userRepository.count({ email });
+    try {
+      return await this.userRepository.count({ email });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async getUser(username: string): Promise<User> {
-    return await this.userRepository.findOne({ username });
+    try {
+      return await this.userRepository.findOne({ username });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async invalidateUserJwt(username: string) {
+    try {
+      await this.userRepository.update({ username }, { jwtToken: null });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async generateJwt(user: IUser): Promise<string> {
-    const payload: IJwtPayload = { id: user.id, username: user.username };
-    return this.jwtService.sign({ ...payload });
+    try {
+      const payload: IJwtPayload = { id: user.id, username: user.username };
+      return this.jwtService.sign({ ...payload });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async saveJwtToUser(user: User, jwt: string) {
-    await this.userRepository.update(user, { jwtToken: jwt });
+    try {
+      await this.userRepository.update(user, { jwtToken: jwt });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async getUserByJwt(jwt: string): Promise<User> {
-    return await this.userRepository.findOne({ jwtToken: jwt });
+    try {
+      return await this.userRepository.findOne({ jwtToken: jwt });
+    } catch (err) {
+      console.error(err);
+    }
   }
 }

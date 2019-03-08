@@ -6,7 +6,7 @@
     fxLayoutGap="10px"
     *ngFor="let contact of contactList"
   >
-    <img fxFlex="15" [src]="contact.image" />
+    <img fxFlex="15" [src]="contact.image | missingImage" />
     <p (click)="openChat(contact.id)" fxFlex="65">{{ contact.name }}</p>
     <div
       fxFlex="2"
@@ -19,7 +19,5 @@
   </div>
 </div>
 <mat-menu #contactMore="matMenu">
-  <button mat-menu-item>
-    <mat-icon>person_add_disabled </mat-icon>Remove from contacts
-  </button>
+  <button mat-menu-item><mat-icon>person_add_disabled </mat-icon>Remove from contacts</button>
 </mat-menu>

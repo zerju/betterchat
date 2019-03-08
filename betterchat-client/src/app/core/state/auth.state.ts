@@ -62,8 +62,7 @@ export class AuthState {
       .pipe(
         tap(res => {
           const user = res.user;
-          const jwt = jwt_decode(res.jwt);
-          user.jwToken = res.jwt;
+          const jwt = jwt_decode(res.user.jwtToken);
           user.iat = jwt.iat;
           user.exp = jwt.exp;
           context.patchState({ user, apiError: null });
@@ -88,8 +87,21 @@ export class AuthState {
 
   @Action(LogoutUserAction)
   LogoutUserAction(context: StateContext<AuthStateModel>) {
-    context.patchState({ user: null });
-    this.ngZone.run(() => this.router.navigate(['auth', 'login']));
+    const state = context.getState();
+    this.http
+      .post(`${API_URL}/auth/logout`, { username: state.user.username })
+      .pipe(
+        tap(() => {
+          this.ngZone.run(() => this.router.navigate(['auth', 'login']));
+          context.patchState({ user: null });
+        }),
+        catchError(err => {
+          this.ngZone.run(() => this.router.navigate(['auth', 'login']));
+          context.patchState({ user: null });
+          return of(err);
+        })
+      )
+      .subscribe();
   }
 
   @Action(UpdateUserAction)

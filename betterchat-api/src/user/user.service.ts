@@ -25,6 +25,20 @@ export class UserService {
     }
   }
 
+  async updateUserWPw(user: IUser): Promise<IUser> {
+    try {
+      return this.prepareUserObject(
+        await this.userRepository
+          .update({ username: user.username }, user)
+          .then(() => {
+            return this.userRepository.findOne({ username: user.username });
+          }),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   prepareUserObject(user: IUser): IUser {
     delete user.password;
     delete user.id;

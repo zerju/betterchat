@@ -1,9 +1,9 @@
 export interface IUser {
-  id: number;
+  id?: number;
   username: string;
-  email: string;
+  email?: string;
   image?: string;
-  isOnline: boolean;
+  isOnline?: boolean;
   jwtToken?: string;
   password?: string;
 }

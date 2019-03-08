@@ -30,7 +30,7 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor(private router: Router, private _store: Store) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (PATHS_WITHOUT_TOKEN.includes(req.url)) {
+    if (PATHS_WITHOUT_TOKEN.includes(req.url.split('?')[0])) {
       return next.handle(req);
     }
     const token = this._store.selectSnapshot<string>((state: AppState) => {

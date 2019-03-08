@@ -1,0 +1,66 @@
+<div class="dialog">
+  <h2 mat-dialog-title>Profile</h2>
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="profileForm">
+      <div class="profile-section">
+        <h3>Image</h3>
+        <div
+          class="profile-image"
+          [ngStyle]="{ 'background-image': 'url(' + (user.image | missingImage) + ')' }"
+        >
+          <div class="hover-overlay">
+            <mat-icon>add_a_photo</mat-icon>
+          </div>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h3>Username</h3>
+        <mat-form-field>
+          <input formControlName="username" matInput name="username" placeholder="Username" />
+        </mat-form-field>
+      </div>
+      <div class="profile-section">
+        <h3>Email</h3>
+        <mat-form-field>
+          <input formControlName="email" matInput type="email" name="email" placeholder="Email" />
+        </mat-form-field>
+      </div>
+      <div formGroupName="passwordGroup" class="profile-section">
+        <h3>Password</h3>
+        <mat-form-field>
+          <input
+            formControlName="currentPassword"
+            type="password"
+            matInput
+            name="current-password"
+            placeholder="Current password"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            formControlName="password"
+            type="password"
+            matInput
+            name="new-password"
+            placeholder="New password"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            formControlName="repeatPassword"
+            type="password"
+            matInput
+            name="repeat-new-password"
+            placeholder="Repeat new password"
+          />
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button [disabled]="!profileForm.valid" mat-button (click)="updateUser()" cdkFocusInitial>
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>

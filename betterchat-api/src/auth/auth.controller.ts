@@ -1,3 +1,4 @@
+import { LogoutDto } from './dto/logout.dto';
 import { LoginDto } from './dto/login.dto';
 import { UserExistsDto } from './dto/user-exists.dto';
 import {
@@ -9,11 +10,13 @@ import {
   HttpStatus,
   Query,
   HttpCode,
+  Headers,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './../database/entities/user.entity';
+import * as jwt_decode from 'jwt-decode';
 
 @Controller('auth')
 export class AuthController {
@@ -29,41 +32,32 @@ export class AuthController {
     const { username, email, password } = createUserDto;
 
     bcrypt.hash(password, 10, (err, hash) => {
-      try {
-        const user = new User();
-        user.username = username;
-        user.email = email;
-        user.password = hash;
-        this.authService.createUser(user);
-      } catch (err) {
-        console.error(err);
-        throw new HttpException(
-          'Internal Server Error',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+      const user = new User();
+      user.username = username;
+      user.email = email;
+      user.password = hash;
+      this.authService.createUser(user);
     });
   }
 
   @Get('/user-exists')
   async userExists(@Query() queryParams: UserExistsDto) {
-    try {
-      let numOfUsers;
-      if (queryParams.username) {
-        numOfUsers = await this.authService.usernameExists(
-          queryParams.username,
-        );
-      } else if (queryParams.email) {
-        numOfUsers = await this.authService.emailExists(queryParams.email);
-      }
-      return { userExists: numOfUsers > 0 };
-    } catch (err) {
-      console.error(err);
-      throw new HttpException(
-        'Internal Server Error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+    let numOfUsers;
+    if (queryParams.username) {
+      numOfUsers = await this.authService.usernameExists(queryParams.username);
+    } else if (queryParams.email) {
+      numOfUsers = await this.authService.emailExists(queryParams.email);
     }
+    return { userExists: numOfUsers > 0 };
+  }
+
+  @Post('/check-password')
+  async checkPassword(@Body() password: { password: string }, @Headers() head) {
+    const jwt = jwt_decode(head.authorization.split(' ')[1]);
+    const username = jwt.username;
+    const user = await this.authService.getUser(username);
+    const matches = await bcrypt.compare(password.password, user.password);
+    return { correctPassword: matches };
   }
 
   @Post('/login')
@@ -77,7 +71,7 @@ export class AuthController {
         const jwt = await this.authService.generateJwt(user);
         this.authService.saveJwtToUser(user, jwt);
         user.jwtToken = jwt;
-        return { user, jwt };
+        return { user };
       } else {
         throw new HttpException(
           'Wrong username or password',
@@ -90,5 +84,10 @@ export class AuthController {
         HttpStatus.UNAUTHORIZED,
       );
     }
+  }
+
+  @Post('/logout')
+  async logout(@Body() logoutInfo: LogoutDto) {
+    this.authService.invalidateUserJwt(logoutInfo.username);
   }
 }

@@ -19,6 +19,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { LoggedOutToolbarComponent } from './logged-out-toolbar/logged-out-toolbar.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ProfileModalComponent } from './profile-modal/profile-modal.component';
+import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 const COMPONENTS: any[] = [
   ToolbarComponent,
@@ -28,7 +30,8 @@ const COMPONENTS: any[] = [
   ChatToolbarComponent,
   ChatInputBoxComponent,
   MessagesComponent,
-  LoggedOutToolbarComponent
+  LoggedOutToolbarComponent,
+  ProfileModalComponent
 ];
 
 @NgModule({
@@ -46,8 +49,14 @@ const COMPONENTS: any[] = [
     MatMenuModule,
     RouterModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
+  entryComponents: [ProfileModalComponent],
   exports: [COMPONENTS]
 })
 export class ComponentsModule {}

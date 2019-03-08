@@ -1,3 +1,4 @@
+import { AppState } from './../../core/state/app.state';
 import { AuthState } from 'src/app/core/state/auth.state';
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
@@ -7,6 +8,8 @@ import { PlatformState } from 'src/app/core/state/platform.state';
 import { GetPlatformAction } from 'src/app/core/actions/platfrom.action';
 import { CloseSidebar } from 'src/app/core/actions/layout.action';
 import { IUser } from 'src/app/core/models/user.model';
+import { MatDialog } from '@angular/material';
+import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
 
 @Component({
   selector: 'app-layout',
@@ -20,7 +23,7 @@ export class LayoutComponent implements OnInit {
 
   onMobile: boolean;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, public dialog: MatDialog) {
     this.isMobileState$.subscribe(isMobile => {
       this.onMobile = isMobile;
       if (isMobile) {
@@ -31,4 +34,13 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  openProfileModal() {
+    const user = this.store.selectSnapshot<IUser>((state: AppState) => {
+      return state.auth.user;
+    });
+    const dialogRef = this.dialog.open(ProfileModalComponent, {
+      data: user
+    });
+  }
 }

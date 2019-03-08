@@ -12,7 +12,7 @@
     <button
       mat-icon-button
       [matMenuTriggerFor]="accountMenu"
-      [ngStyle]="{ background: 'url(' + (me.image ? me.image : defaultImage) + ')' }"
+      [ngStyle]="{ background: 'url(' + (me.image | missingImage) + ')' }"
     ></button>
   </div>
 </mat-toolbar>
@@ -23,7 +23,7 @@
   <button mat-menu-item>New Anonymous Chat</button>
 </mat-menu>
 <mat-menu #accountMenu="matMenu">
-  <button mat-menu-item>Profile</button>
+  <button (click)="openProfileModal.next()" mat-menu-item>Profile</button>
   <button
     *ngIf="me"
     (click)="toggleUserVisibility()"
