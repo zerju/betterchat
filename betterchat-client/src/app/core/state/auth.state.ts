@@ -62,9 +62,10 @@ export class AuthState {
       .pipe(
         tap(res => {
           const user = res.user;
-          const jwt = jwt_decode(res.user.jwtToken);
+          const jwt = jwt_decode(res.jwt);
           user.iat = jwt.iat;
           user.exp = jwt.exp;
+          user.jwtToken = res.jwt;
           context.patchState({ user, apiError: null });
           this.ngZone.run(() => this.router.navigate(['']));
         }),

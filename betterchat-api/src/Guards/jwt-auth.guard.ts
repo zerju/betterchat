@@ -1,4 +1,4 @@
-import { AuthService } from './../auth/auth.service';
+import { UserService } from './../user/user.service';
 import {
   ExecutionContext,
   Injectable,
@@ -8,7 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(private authService: AuthService) {
+  constructor(private userService: UserService) {
     super();
   }
   async canActivate(context: ExecutionContext) {
@@ -16,7 +16,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       .switchToHttp()
       .getRequest()
       .headers.Authorization.split(' ')[1];
-    const user = await this.authService.getUserByJwt(token);
+    const user = await this.userService.getUserByJwt(token);
     return !!user;
   }
 

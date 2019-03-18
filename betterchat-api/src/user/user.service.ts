@@ -1,58 +1,95 @@
 import { IUser } from './../interfaces/user.interface';
 import { Injectable, Inject } from '@nestjs/common';
-import { databaseTokens } from './../database/constants/tokens';
 import { Repository } from 'typeorm';
-import { User } from '../database/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entity/user.entity';
+import { UserSession } from 'src/entity/user-session.entity';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(databaseTokens.userToken)
+    @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(UserSession)
+    private readonly sessionRepository: Repository<UserSession>,
   ) {}
 
-  async updateUser(user: IUser): Promise<IUser> {
+  async updateUser(user: User): Promise<User> {
     try {
-      return this.prepareUserObject(
-        await this.userRepository
-          .update({ username: user.username }, this.prepareUserObject(user))
-          .then(() => {
-            return this.userRepository.findOne({ username: user.username });
-          }),
-      );
+      return await this.userRepository
+        .update({ username: user.username }, this.prepareUserObject(user, true))
+        .then(() => {
+          return this.userRepository.findOne({ username: user.username });
+        });
     } catch (err) {
       console.error(err);
     }
   }
 
-  async updateUserWPw(user: IUser): Promise<IUser> {
-    try {
-      return this.prepareUserObject(
-        await this.userRepository
-          .update({ username: user.username }, user)
-          .then(() => {
-            return this.userRepository.findOne({ username: user.username });
-          }),
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  // async updateUserWPw(user: User): Promise<User> {
+  //   try {
+  //     return this.prepareUserObject(
+  //       await this.userRepository
+  //         .update({ username: user.username }, user)
+  //         .then(() => {
+  //           return this.userRepository.findOne({ username: user.username });
+  //         }),
+  //       true,
+  //     );
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }
 
-  prepareUserObject(user: IUser): IUser {
+  prepareUserObject(user: User, deleteId = false): User {
     delete user.password;
-    delete user.id;
+    if (deleteId) {
+      delete user.id;
+    }
+    if (user.sessions) {
+      for (const session of user.sessions) {
+        delete session.jwt;
+      }
+    }
     return user;
   }
 
-  transformRequestUser(userData: IUser): IUser {
-    const user: IUser = {
+  transformRequestUser(userData: User): User {
+    const user = {
       id: userData.id,
       image: userData.image,
       username: userData.username,
       isOnline: userData.isOnline,
       email: userData.email,
+      password: userData.password,
     };
     return user;
+  }
+
+  async createUser(user: User) {
+    try {
+      await this.userRepository.insert(user);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  async getUser(username: string): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne({ username });
+      return user;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  async getUserByJwt(jwt: string): Promise<User> {
+    try {
+      const sessions = await this.sessionRepository.find({
+        relations: ['user'],
+        jwt,
+      });
+      return sessions[0].user;
+    } catch (err) {
+      console.error(err);
+    }
   }
 }

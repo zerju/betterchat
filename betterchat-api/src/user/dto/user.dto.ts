@@ -1,3 +1,4 @@
+import { IUserSession } from './../../interfaces/user-session.interface';
 import { IsEmail, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
 
 export class UserDto {
@@ -7,8 +8,8 @@ export class UserDto {
   @IsEmail()
   readonly email: string;
 
-  @IsNumber()
-  readonly id: number;
+  @IsNotEmpty()
+  readonly id: string;
 
   readonly image: string;
 
@@ -16,4 +17,6 @@ export class UserDto {
   readonly isOnline: boolean;
 
   readonly password?: string;
+
+  readonly sessions?: IUserSession[];
 }

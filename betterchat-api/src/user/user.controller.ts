@@ -11,19 +11,9 @@ export class UserController {
   @UseGuards(AuthGuard())
   @Put('/update')
   async updateUser(@Body() userData: UserDto) {
-    let user;
-    if (userData.password) {
-      const hash = await bcrypt.hash(userData.password, 10);
-      user = {
-        username: userData.username,
-        email: userData.email,
-        password: hash,
-      };
-      user = await this.userService.updateUserWPw(user);
-    } else {
-      user = this.userService.transformRequestUser(userData);
-      user = await this.userService.updateUser(user);
-    }
+    let user = this.userService.transformRequestUser(userData);
+    user = await this.userService.updateUser(user);
+    user = this.userService.prepareUserObject(user);
     return { user };
   }
 }

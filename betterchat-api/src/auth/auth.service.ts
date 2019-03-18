@@ -1,34 +1,23 @@
+import { UserService } from './../user/user.service';
+import { IUserSession } from './../interfaces/user-session.interface';
 import { IUser } from './../interfaces/user.interface';
 import { IJwtPayload } from './../interfaces/jwt-payload.interface';
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { databaseTokens } from './../database/constants/tokens';
 import { Repository } from 'typeorm';
-import { User } from '../database/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entity/user.entity';
+import { UserSession } from 'src/entity/user-session.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(databaseTokens.userToken)
+    @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    @InjectRepository(UserSession)
+    private readonly sessionRepository: Repository<UserSession>,
   ) {}
-
-  async findAll(): Promise<User[]> {
-    try {
-      return await this.userRepository.find();
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async createUser(user: User) {
-    try {
-      await this.userRepository.insert(user);
-    } catch (err) {
-      console.error(err);
-    }
-  }
 
   async usernameExists(username: string): Promise<number> {
     try {
@@ -45,23 +34,15 @@ export class AuthService {
     }
   }
 
-  async getUser(username: string): Promise<User> {
+  async invalidateUserJwt(jwt: string) {
     try {
-      return await this.userRepository.findOne({ username });
+      await this.sessionRepository.delete({ jwt });
     } catch (err) {
       console.error(err);
     }
   }
 
-  async invalidateUserJwt(username: string) {
-    try {
-      await this.userRepository.update({ username }, { jwtToken: null });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async generateJwt(user: IUser): Promise<string> {
+  async generateJwt(user: User): Promise<string> {
     try {
       const payload: IJwtPayload = { id: user.id, username: user.username };
       return this.jwtService.sign({ ...payload });
@@ -72,15 +53,13 @@ export class AuthService {
 
   async saveJwtToUser(user: User, jwt: string) {
     try {
-      await this.userRepository.update(user, { jwtToken: jwt });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async getUserByJwt(jwt: string): Promise<User> {
-    try {
-      return await this.userRepository.findOne({ jwtToken: jwt });
+      const session: IUserSession = {
+        jwt,
+        lastActivity: Date.now(),
+      };
+      const foundUser = await this.userRepository.findOne(user);
+      foundUser.sessions = [...user.sessions, session];
+      await this.userRepository.save(foundUser);
     } catch (err) {
       console.error(err);
     }

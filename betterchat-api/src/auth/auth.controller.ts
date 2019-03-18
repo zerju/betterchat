@@ -1,4 +1,4 @@
-import { LogoutDto } from './dto/logout.dto';
+import { UserService } from './../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { UserExistsDto } from './dto/user-exists.dto';
 import {
@@ -15,17 +15,15 @@ import {
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './../database/entities/user.entity';
 import * as jwt_decode from 'jwt-decode';
+import { User } from 'src/entity/user.entity';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-
-  @Get()
-  findAll() {
-    return this.authService.findAll();
-  }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post('/register')
   createUser(@Body() createUserDto: CreateUserDto) {
@@ -36,7 +34,7 @@ export class AuthController {
       user.username = username;
       user.email = email;
       user.password = hash;
-      this.authService.createUser(user);
+      this.userService.createUser(user);
     });
   }
 
@@ -53,25 +51,25 @@ export class AuthController {
 
   @Post('/check-password')
   async checkPassword(@Body() password: { password: string }, @Headers() head) {
-    const jwt = jwt_decode(head.authorization.split(' ')[1]);
-    const username = jwt.username;
-    const user = await this.authService.getUser(username);
-    const matches = await bcrypt.compare(password.password, user.password);
+    const jwt = head.authorization.split(' ')[1];
+    const user = await this.userService.getUserByJwt(jwt);
+    const matches =
+      user && (await bcrypt.compare(password.password, user.password));
     return { correctPassword: matches };
   }
 
   @Post('/login')
   @HttpCode(200)
   async login(@Body() login: LoginDto) {
-    const user = await this.authService.getUser(login.username);
+    let user = await this.userService.getUser(login.username);
     if (user) {
       const matches = await bcrypt.compare(login.password, user.password);
       if (matches) {
-        delete user.password;
         const jwt = await this.authService.generateJwt(user);
         this.authService.saveJwtToUser(user, jwt);
-        user.jwtToken = jwt;
-        return { user };
+        user = await this.userService.getUser(login.username);
+        user = this.userService.prepareUserObject(user);
+        return { user, jwt };
       } else {
         throw new HttpException(
           'Wrong username or password',
@@ -87,7 +85,8 @@ export class AuthController {
   }
 
   @Post('/logout')
-  async logout(@Body() logoutInfo: LogoutDto) {
-    this.authService.invalidateUserJwt(logoutInfo.username);
+  async logout(@Headers() head) {
+    const jwt = head.authorization.split(' ')[1];
+    this.authService.invalidateUserJwt(jwt);
   }
 }

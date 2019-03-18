@@ -8,4 +8,5 @@ export interface IUser {
   iat?: number;
   exp?: number;
   password?: string;
+  sessions?: any;
 }
