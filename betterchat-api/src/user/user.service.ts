@@ -16,8 +16,13 @@ export class UserService {
 
   async updateUser(user: User): Promise<User> {
     try {
+      delete user.id;
+      Object.keys(user).forEach(
+        key =>
+          (user[key] === undefined || user[key] == null) && delete user[key],
+      );
       return await this.userRepository
-        .update({ username: user.username }, this.prepareUserObject(user, true))
+        .update({ username: user.username }, user)
         .then(() => {
           return this.userRepository.findOne({ username: user.username });
         });

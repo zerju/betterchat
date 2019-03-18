@@ -12,6 +12,14 @@ export function newPasswordValidator(control: AbstractControl): { [key: string]:
     return null;
   }
   if (
+    currentPassControl.value &&
+    currentPassControl.value.length > 0 &&
+    (passwordControl.value == null || passwordControl.value === '') &&
+    (confirmControl.value == null || confirmControl.value === '')
+  ) {
+    return { notValid: true };
+  }
+  if (
     passwordControl.value != null &&
     passwordControl.value !== '' &&
     (confirmControl.value != null && confirmControl.value !== '') &&
