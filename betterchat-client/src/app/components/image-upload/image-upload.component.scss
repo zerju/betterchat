@@ -1,0 +1,19 @@
+.image-upload {
+  max-width: 90vw;
+  min-width: 50vw;
+  .upload-image-square {
+    width: 400px;
+    height: 250px;
+    border: 3px dashed rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    cursor: pointer;
+    margin: auto;
+    p {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

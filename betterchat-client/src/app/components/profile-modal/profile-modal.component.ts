@@ -1,9 +1,10 @@
+import { ImageUploadComponent } from './../image-upload/image-upload.component';
 import { UpdateUserAction } from './../../core/actions/auth.action';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IUser } from './../../core/models/user.model';
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { existUsernameValidator } from './../../utils/validators/username-exists.validator';
 import { existEmailValidator } from './../../utils/validators/email-exists.validator';
 import { validatePassword } from 'src/app/utils/validators/password.validator';
@@ -24,7 +25,8 @@ export class ProfileModalComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: IUser,
     private http: HttpClient,
-    private store: Store
+    private store: Store,
+    public dialog: MatDialog
   ) {
     this.user = data;
     this.profileForm = new FormGroup({
@@ -60,5 +62,11 @@ export class ProfileModalComponent {
       id: this.user.id
     };
     this.store.dispatch(new UpdateUserAction(user));
+  }
+
+  openUploadImage() {
+    const dialogRef = this.dialog.open(ImageUploadComponent, {
+      data: this.user
+    });
   }
 }

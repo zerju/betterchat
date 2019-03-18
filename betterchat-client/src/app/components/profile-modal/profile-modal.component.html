@@ -8,7 +8,7 @@
           class="profile-image"
           [ngStyle]="{ 'background-image': 'url(' + (user.image | missingImage) + ')' }"
         >
-          <div class="hover-overlay">
+          <div (click)="openUploadImage()" class="hover-overlay">
             <mat-icon>add_a_photo</mat-icon>
           </div>
         </div>

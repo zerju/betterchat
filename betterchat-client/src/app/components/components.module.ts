@@ -21,6 +21,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ProfileModalComponent } from './profile-modal/profile-modal.component';
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { ImageUploadComponent } from './image-upload/image-upload.component';
 
 const COMPONENTS: any[] = [
   ToolbarComponent,
@@ -31,7 +32,8 @@ const COMPONENTS: any[] = [
   ChatInputBoxComponent,
   MessagesComponent,
   LoggedOutToolbarComponent,
-  ProfileModalComponent
+  ProfileModalComponent,
+  ImageUploadComponent
 ];
 
 @NgModule({
@@ -56,7 +58,7 @@ const COMPONENTS: any[] = [
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [ProfileModalComponent],
+  entryComponents: [ProfileModalComponent, ImageUploadComponent],
   exports: [COMPONENTS]
 })
 export class ComponentsModule {}
