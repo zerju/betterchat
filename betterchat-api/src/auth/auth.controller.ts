@@ -15,7 +15,6 @@ import {
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import * as jwt_decode from 'jwt-decode';
 import { User } from 'src/entity/user.entity';
 
 @Controller('auth')

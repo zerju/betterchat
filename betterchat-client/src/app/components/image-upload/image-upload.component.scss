@@ -1,6 +1,6 @@
 .image-upload {
   max-width: 90vw;
-  min-width: 50vw;
+  min-width: 30vw;
   .upload-image-square {
     width: 400px;
     height: 250px;
@@ -10,10 +10,34 @@
     align-content: center;
     cursor: pointer;
     margin: auto;
+    position: relative;
+    &.file-uploaded {
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        .another-image-text {
+          display: block;
+        }
+        img {
+          opacity: 0.5;
+        }
+      }
+      .another-image-text {
+        display: none;
+        position: absolute;
+        left: 10%;
+        top: 40%;
+        z-index: 10;
+      }
+    }
     p {
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    img {
+      object-fit: scale-down;
+      width: 100%;
+      height: 244px;
     }
   }
 }

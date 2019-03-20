@@ -17,12 +17,15 @@ export class UserService {
   async updateUser(user: User): Promise<User> {
     try {
       delete user.id;
-      Object.keys(user).forEach(
+      const userToUpdate = { ...user };
+      delete userToUpdate.username;
+      Object.keys(userToUpdate).forEach(
         key =>
-          (user[key] === undefined || user[key] == null) && delete user[key],
+          (userToUpdate[key] === undefined || userToUpdate[key] == null) &&
+          delete userToUpdate[key],
       );
       return await this.userRepository
-        .update({ username: user.username }, user)
+        .update({ username: user.username }, userToUpdate)
         .then(() => {
           return this.userRepository.findOne({ username: user.username });
         });
@@ -47,13 +50,14 @@ export class UserService {
   // }
 
   prepareUserObject(user: User, deleteId = false): User {
-    delete user.password;
-    if (deleteId) {
-      delete user.id;
-    }
-    if (user.sessions) {
-      for (const session of user.sessions) {
-        delete session.jwt;
+    if (user) {
+      if (user.password) {
+        delete user.password;
+      }
+      if (user.sessions) {
+        for (const session of user.sessions) {
+          delete session.jwt;
+        }
       }
     }
     return user;

@@ -36,11 +36,8 @@ export class LayoutComponent implements OnInit {
   ngOnInit() {}
 
   openProfileModal() {
-    const user = this.store.selectSnapshot<IUser>((state: AppState) => {
-      return state.auth.user;
-    });
     const dialogRef = this.dialog.open(ProfileModalComponent, {
-      data: user
+      data: this.user$
     });
   }
 }

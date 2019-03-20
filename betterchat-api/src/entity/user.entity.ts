@@ -41,8 +41,7 @@ export class User {
 
   @OneToMany(type => UserSession, userSession => userSession.user, {
     cascade: true,
-    eager: true,
   })
-  @JoinColumn()
+  @JoinColumn({ name: 'sessions' })
   sessions?: UserSession[];
 }

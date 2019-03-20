@@ -14,12 +14,6 @@
         </div>
       </div>
       <div class="profile-section">
-        <h3>Username</h3>
-        <mat-form-field>
-          <input formControlName="username" matInput name="username" placeholder="Username" />
-        </mat-form-field>
-      </div>
-      <div class="profile-section">
         <h3>Email</h3>
         <mat-form-field>
           <input formControlName="email" matInput type="email" name="email" placeholder="Email" />
@@ -59,7 +53,13 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button [disabled]="!profileForm.valid" mat-button (click)="updateUser()" cdkFocusInitial>
+    <button
+      [mat-dialog-close]="closeDialog"
+      [disabled]="!profileForm.valid"
+      mat-button
+      (click)="updateUser()"
+      cdkFocusInitial
+    >
       Save
     </button>
   </mat-dialog-actions>

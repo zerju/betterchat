@@ -1,5 +1,5 @@
 import { IJwtResponse } from './../models/jwt-response.model';
-import { LogoutUserAction, UpdateUserAction } from './../actions/auth.action';
+import { LogoutUserAction, UpdateUserAction, UploadImageAction } from './../actions/auth.action';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { IUser } from '../models/user.model';
 import { RegisteruserAction, LoginUserAction, GetSavedUserAction } from '../actions/auth.action';
@@ -117,6 +117,23 @@ export class AuthState {
           return context.patchState({ user });
         }),
         catchError(err => of(err))
+      )
+      .subscribe();
+  }
+
+  @Action(UploadImageAction)
+  uploadImage(context: StateContext<AuthStateModel>, action: UploadImageAction) {
+    const formData = new FormData();
+    const state = context.getState();
+    formData.append('image', action.image);
+    this.http
+      .post<any>(`${API_URL}/user/avatar`, formData)
+      .pipe(
+        tap(user => {
+          let updatedUser = { ...state.user };
+          updatedUser = { ...updatedUser, ...user };
+          context.patchState({ user: updatedUser });
+        })
       )
       .subscribe();
   }

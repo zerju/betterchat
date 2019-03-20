@@ -24,3 +24,8 @@ export class UpdateUserAction {
   static readonly type = '[Auth] Update User';
   constructor(public user: IUser) {}
 }
+
+export class UploadImageAction {
+  static readonly type = '[Auth] Upload Image';
+  constructor(public image: File) {}
+}

@@ -1,13 +1,34 @@
 <div class="image-upload">
   <h2 mat-dialog-title>Upload image</h2>
   <mat-dialog-content class="mat-typography">
-    <div class="upload-image-square">
-      <p>Drag an image here or click to upload an image...</p>
+    <div
+      (drop)="drop($event)"
+      (dragover)="allowDrop($event)"
+      (click)="fileInput.click()"
+      class="upload-image-square"
+      [ngClass]="{ 'file-uploaded': fileUploaded }"
+    >
+      <p *ngIf="!fileUploaded; else imagePreview">
+        {{ isAdvancedUpload() ? "Drag an image here or c" : "C" }}lick to upload an image...
+      </p>
+      <ng-template #imagePreview>
+        <p class="another-image-text">
+          {{ isAdvancedUpload() ? "Drag an image here or c" : "C" }}lick to upload another image...
+        </p>
+        <img #previewImage />
+      </ng-template>
+      <input
+        (input)="onFileInput(fileInput.files)"
+        type="file"
+        hidden
+        #fileInput
+        accept="image/*"
+      />
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button>
+    <button mat-button [mat-dialog-close]="closeDialog" (click)="upload()">
       Upload
     </button>
   </mat-dialog-actions>
