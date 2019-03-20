@@ -83,15 +83,17 @@ export class UserController {
   async uploadAvatar(@UploadedFile() image, @Headers() head) {
     const jwt = head.authorization.split(' ')[1];
     const user = await this.userService.getUserByJwt(jwt);
-    console.log(user);
-    fs.unlink(`${envVariables.uploadsFolder}/${user.image}`, err => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-    });
+    const previousImage = { ...user }.image;
     user.image = image.filename;
     const updatedUser = await this.userService.updateUser(user);
+    if (previousImage) {
+      fs.unlink(`${envVariables.uploadsFolder}/${previousImage}`, err => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+      });
+    }
     return this.userService.prepareUserObject(updatedUser);
   }
 
