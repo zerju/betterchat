@@ -1,5 +1,12 @@
 import { IJwtResponse } from './../models/jwt-response.model';
-import { LogoutUserAction, UpdateUserAction, UploadImageAction } from './../actions/auth.action';
+import {
+  LogoutUserAction,
+  UpdateUserAction,
+  UploadImageAction,
+  SearchUsersAction,
+  AddFriendAction,
+  GetFriendsAction
+} from './../actions/auth.action';
 import { State, Action, StateContext, Selector, Store } from '@ngxs/store';
 import { IUser } from '../models/user.model';
 import { RegisteruserAction, LoginUserAction, GetSavedUserAction } from '../actions/auth.action';
@@ -10,16 +17,22 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { NgZone } from '@angular/core';
 import * as jwt_decode from 'jwt-decode';
+import { IFriend } from '../models/friend.model';
 
 export class AuthStateModel {
   user: IUser;
+  friends: IUser[];
+  foundUsers: IUser[];
   apiError: string;
 }
 
 const API_URL = environment.apiUrl;
 
 // AUTH STATE OR USER STATE - BOTH IN THE SAME STATE
-@State<AuthStateModel>({ name: 'auth', defaults: { apiError: null, user: null } })
+@State<AuthStateModel>({
+  name: 'auth',
+  defaults: { apiError: null, user: null, friends: null, foundUsers: null }
+})
 export class AuthState {
   constructor(
     private ngZone: NgZone,
@@ -37,6 +50,14 @@ export class AuthState {
 
   @Selector() static getApiError(state: AuthStateModel) {
     return state.apiError;
+  }
+
+  @Selector() static getFoundUsers(state: AuthStateModel) {
+    return state.foundUsers;
+  }
+
+  @Selector() static getFriendList(state: AuthStateModel) {
+    return state.friends;
   }
 
   @Action(RegisteruserAction)
@@ -73,6 +94,7 @@ export class AuthState {
           user.jwtToken = res.jwt;
           context.patchState({ apiError: null });
           this.store.dispatch(new GetSavedUserAction(user));
+          this.store.dispatch(new GetFriendsAction());
           this.ngZone.run(() => this.router.navigate(['']));
         }),
         catchError(err => {
@@ -146,6 +168,61 @@ export class AuthState {
             updatedUser[key] = user[key];
           }
           this.store.dispatch(new GetSavedUserAction(user));
+        })
+      )
+      .subscribe();
+  }
+
+  @Action(SearchUsersAction)
+  searchUsers(context: StateContext<AuthStateModel>, action: SearchUsersAction) {
+    this.http
+      .get<any>(`${API_URL}/user/search/${action.username}`)
+      .pipe(
+        tap(res => {
+          const state = context.getState();
+          const friends = [...state.friends];
+          res.map(user => {
+            for (let i = 0; i < friends.length; i++) {
+              if (friends[i].username === user.username) {
+                user.isFriend = true;
+              }
+            }
+          });
+          context.patchState({ foundUsers: res });
+        })
+      )
+      .subscribe();
+  }
+
+  @Action(AddFriendAction)
+  addFriend(context: StateContext<AuthStateModel>, action: AddFriendAction) {
+    this.http
+      .post<any>(`${API_URL}/user/add-friend`, action.friend)
+      .pipe(tap(() => this.store.dispatch(new GetFriendsAction())))
+      .subscribe();
+  }
+
+  @Action(GetFriendsAction)
+  getFriends(context: StateContext<AuthStateModel>, action: GetFriendsAction) {
+    this.http
+      .get<any>(`${API_URL}/user/friends`)
+      .pipe(
+        tap(friends => {
+          context.patchState({ friends });
+          const state = context.getState();
+          if (state.foundUsers && state.foundUsers.length > 0) {
+            const foundUsers = [...state.foundUsers];
+            foundUsers.map(user => {
+              const u = { ...user };
+              for (let i = 0; i < friends.length; i++) {
+                if (friends[i].username === user.username) {
+                  u.isFriend = true;
+                }
+              }
+              return u;
+            });
+          }
+          context.patchState({ friends });
         })
       )
       .subscribe();

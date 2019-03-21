@@ -6,6 +6,8 @@ import {
   Index,
   OneToMany,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserRelationship } from './user-relationship.entity';
 
@@ -31,13 +33,19 @@ export class User {
   @Column({ default: false })
   isOnline?: boolean;
 
+  @CreateDateColumn()
+  createdAt?: Date;
+
+  @UpdateDateColumn()
+  public updatedAt?: Date;
+
   @OneToMany(
     type => UserRelationship,
-    userRelationship => userRelationship.relatedUserId,
+    userRelationship => userRelationship.relatingUserId,
     { cascade: true },
   )
   @JoinColumn()
-  relationships?: UserRelationship;
+  relationships?: UserRelationship[];
 
   @OneToMany(type => UserSession, userSession => userSession.user, {
     cascade: true,

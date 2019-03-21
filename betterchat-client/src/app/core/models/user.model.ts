@@ -9,4 +9,5 @@ export interface IUser {
   exp?: number;
   password?: string;
   sessions?: any;
+  isFriend?: boolean;
 }

@@ -16,6 +16,9 @@ export class ToolbarComponent {
   @Output()
   openProfileModal = new EventEmitter<void>();
 
+  @Output()
+  openAddFriend = new EventEmitter<void>();
+
   constructor(private store: Store) {}
 
   toggleSidenav() {

@@ -1,3 +1,4 @@
+import { UserRelationship } from './../entity/user-relationship.entity';
 import { UserService } from './../user/user.service';
 import { UserModule } from './../user/user.module';
 import { envVariables } from '../env-variables';
@@ -13,7 +14,7 @@ import { User } from 'src/entity/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, UserSession]),
+    TypeOrmModule.forFeature([User, UserSession, UserRelationship]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secretOrPrivateKey: envVariables.jwtSecret,

@@ -21,6 +21,7 @@ import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
 import { diskStorage } from 'multer';
 import { envVariables } from 'src/env-variables';
+import { decode } from 'jsonwebtoken';
 
 @Controller('user')
 export class UserController {
@@ -101,5 +102,35 @@ export class UserController {
   async getAvatar(@Param('imgId') imgId, @Res() res) {
     const imgPath = `${envVariables.uploadsFolder}/${imgId}`;
     return res.sendFile(imgPath, { root: 'public' });
+  }
+
+  @UseGuards(AuthGuard())
+  @Get('/search/:username')
+  async getUsers(@Param('username') username, @Headers() head) {
+    const jwt = head.authorization.split(' ')[1];
+    const jwtUsername = (decode(jwt) as any).username;
+    let users = await this.userService.searchUsers(username);
+    users = users
+      .map(user => this.userService.prepareUserObject(user))
+      .filter(user => user.username !== jwtUsername);
+    return users;
+  }
+
+  @UseGuards(AuthGuard())
+  @Post('/add-friend')
+  async addFriend(@Body() friend, @Headers() head) {
+    const jwt = head.authorization.split(' ')[1];
+    const user = await this.userService.getUserByJwt(jwt);
+    await this.userService.addFriend(user, friend);
+  }
+
+  @UseGuards(AuthGuard())
+  @Get('/friends')
+  async getFriends(@Headers() head) {
+    const jwt = head.authorization.split(' ')[1];
+    const foundU = await this.userService.getUserByJwt(jwt);
+    const friends: any = await this.userService.getFriends(foundU);
+    friends.map(friend => (friend.isFriend = true));
+    return friends;
   }
 }

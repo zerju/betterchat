@@ -1,0 +1,42 @@
+@import "../../../variables.scss";
+.app-dialog {
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  mat-form-field {
+    @media #{$mobile} {
+      width: 140px;
+    }
+  }
+  button {
+    margin-left: 24px;
+  }
+}
+
+.found-friends {
+  .friend-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .friend-info {
+      width: 90%;
+      @media #{$mobile} {
+        width: 200px;
+      }
+    }
+    button {
+      mat-icon {
+        margin-left: 0;
+      }
+    }
+    mat-icon {
+      margin-left: 12px;
+    }
+    .spinner {
+      margin-left: 12px;
+    }
+  }
+}

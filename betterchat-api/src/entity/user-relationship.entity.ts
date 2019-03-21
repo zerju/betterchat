@@ -1,19 +1,26 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/entity/user.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class UserRelationship {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id?: string;
+
+  @ManyToOne(type => User, user => user.relationships, { onDelete: 'CASCADE' })
+  relatingUserId?: User;
+
+  @ManyToOne(type => User, user => user.relationships, { onDelete: 'CASCADE' })
+  relatedUserId?: User;
+
+  @CreateDateColumn()
+  timestamp?: Date;
 
   @Column()
-  relatingUserId: string;
-
-  @Column()
-  relatedUserId: string;
-
-  @Column()
-  timestamp: Date;
-
-  @Column()
-  type: string;
+  type?: string;
 }

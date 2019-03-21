@@ -1,6 +1,8 @@
+import { SearchUsersAction, AddFriendAction } from './../../core/actions/auth.action';
+import { AddFriendComponent } from './../add-friend/add-friend.component';
 import { AppState } from './../../core/state/app.state';
 import { AuthState } from 'src/app/core/state/auth.state';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { LayoutState } from '../../core/state/layout.state';
@@ -20,6 +22,11 @@ export class LayoutComponent implements OnInit {
   @Select(LayoutState.getSidenavState) sidenavState$: Observable<boolean>;
   @Select(PlatformState.isMobile) isMobileState$: Observable<boolean>;
   @Select(AuthState.getUser) user$: Observable<IUser>;
+  @Select(AuthState.getFoundUsers) foundUsers$: Observable<IUser[]>;
+  @Select(AuthState.getFriendList) friends$: Observable<IUser[]>;
+
+  @ViewChild('addFriendModal')
+  private _addFriendModal: TemplateRef<any>;
 
   onMobile: boolean;
 
@@ -39,5 +46,16 @@ export class LayoutComponent implements OnInit {
     const dialogRef = this.dialog.open(ProfileModalComponent, {
       data: this.user$
     });
+  }
+  openAddFriend() {
+    this.dialog.open(this._addFriendModal);
+  }
+
+  searchUsers(username: string) {
+    this.store.dispatch(new SearchUsersAction(username));
+  }
+
+  addFriend(friend: IUser) {
+    this.store.dispatch(new AddFriendAction(friend));
   }
 }

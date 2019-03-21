@@ -18,7 +18,9 @@
   </div>
 </mat-toolbar>
 <mat-menu #addMenu="matMenu">
-  <button mat-menu-item><mat-icon>person_add</mat-icon>Add friend</button>
+  <button mat-menu-item (click)="openAddFriend.next()">
+    <mat-icon>person_add</mat-icon>Add friend
+  </button>
   <button mat-menu-item><mat-icon>add_comment</mat-icon>New Chat</button>
   <button mat-menu-item><mat-icon>group</mat-icon>New Group</button>
   <button mat-menu-item>New Anonymous Chat</button>

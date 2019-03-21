@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { IUser } from 'src/app/core/models/user.model';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CloseSidebar } from './../../core/actions/layout.action';
 
@@ -8,22 +9,11 @@ import { CloseSidebar } from './../../core/actions/layout.action';
   styleUrls: ['./contact-list.component.scss']
 })
 export class ContactListComponent implements OnInit {
-  contactList = [
-    {
-      id: '1',
-      name: 'Johny 1231 312 3123 12312',
-      image:
-        'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4256ef737a6b7fb0ee2533bee81980b9515a927f.jpg',
-      online: true
-    },
-    {
-      id: '2',
-      name: 'Teo',
-      image:
-        'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/42/4256ef737a6b7fb0ee2533bee81980b9515a927f.jpg',
-      online: false
-    }
-  ];
+  @Input()
+  friends: IUser[];
+
+  @Output()
+  friendSelected = new EventEmitter<IUser>();
 
   constructor(private store: Store) {}
 

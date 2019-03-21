@@ -1,6 +1,7 @@
+import { UserRelationship } from './../entity/user-relationship.entity';
 import { IUser } from './../interfaces/user.interface';
 import { Injectable, Inject } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
 import { UserSession } from 'src/entity/user-session.entity';
@@ -12,6 +13,8 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(UserSession)
     private readonly sessionRepository: Repository<UserSession>,
+    @InjectRepository(UserRelationship)
+    private readonly relationshipRepository: Repository<UserRelationship>,
   ) {}
 
   async updateUser(user: User): Promise<User> {
@@ -94,11 +97,62 @@ export class UserService {
     try {
       const sessions = await this.sessionRepository.find({
         relations: ['user'],
-        jwt,
+        where: { jwt },
       });
       return sessions[0].user;
     } catch (err) {
       console.error(err);
     }
+  }
+
+  async searchUsers(username: string): Promise<User[]> {
+    try {
+      return await this.userRepository.find({
+        username: Like(`%${username}%`),
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async getFriends(user: User) {
+    try {
+      const relation = await this.relationshipRepository.find({
+        where: { relatingUserId: user },
+        relations: ['relatedUserId'],
+      });
+      return relation
+        .filter(rel => rel.relatedUserId.username !== user.username)
+        .map(x => x.relatedUserId)
+        .map(x => this.prepareUserObject(x));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async addFriend(user: User, friend: User) {
+    const relationship: UserRelationship = {
+      type: 'friend',
+      relatedUserId: friend,
+    };
+    const relationship2: UserRelationship = {
+      type: 'friend',
+      relatedUserId: user,
+    };
+    const foundUser = await this.userRepository.findOne(user, {
+      relations: ['relationships'],
+    });
+    const foundFriend = await this.userRepository.findOne(
+      { username: friend.username },
+      {
+        relations: ['relationships'],
+      },
+    );
+    foundUser.relationships = [...foundUser.relationships, relationship];
+    foundFriend.relationships = [...foundFriend.relationships, relationship2];
+
+    await this.userRepository
+      .save(foundUser)
+      .then(() => this.userRepository.save(foundFriend));
   }
 }

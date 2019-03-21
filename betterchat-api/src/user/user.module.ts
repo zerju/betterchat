@@ -1,3 +1,4 @@
+import { UserRelationship } from './../entity/user-relationship.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './../auth/auth.module';
 import { Module } from '@nestjs/common';
@@ -7,7 +8,10 @@ import { User } from 'src/entity/user.entity';
 import { UserSession } from 'src/entity/user-session.entity';
 
 @Module({
-  imports: [AuthModule, TypeOrmModule.forFeature([User, UserSession])],
+  imports: [
+    AuthModule,
+    TypeOrmModule.forFeature([User, UserSession, UserRelationship]),
+  ],
   controllers: [UserController],
   providers: [UserService],
 })

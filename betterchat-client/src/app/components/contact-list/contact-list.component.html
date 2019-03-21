@@ -4,20 +4,12 @@
     fxLayoutAlign="space-between center"
     fxLayout="row"
     fxLayoutGap="10px"
-    *ngFor="let contact of contactList"
+    *ngFor="let friend of friends"
   >
-    <img fxFlex="15" [src]="contact.image | missingImage" />
-    <p (click)="openChat(contact.id)" fxFlex="65">{{ contact.name }}</p>
-    <div
-      fxFlex="2"
-      class="online-status"
-      [ngStyle]="{ background: contact.online ? 'green' : 'transparent' }"
-    ></div>
-    <button [matMenuTriggerFor]="contactMore" fxFlex="15" mat-icon-button>
-      <mat-icon>more_vert</mat-icon>
-    </button>
+    <app-friend-list-item
+      (friendSelected)="friendSelected.next($event)"
+      class="friend-info"
+      [friend]="friend"
+    ></app-friend-list-item>
   </div>
 </div>
-<mat-menu #contactMore="matMenu">
-  <button mat-menu-item><mat-icon>person_add_disabled </mat-icon>Remove from contacts</button>
-</mat-menu>

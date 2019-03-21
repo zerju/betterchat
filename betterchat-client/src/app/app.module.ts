@@ -30,7 +30,7 @@ export const httpInterceptorProviders = [
     NgxsModule.forRoot([LayoutState, PlatformState, AuthState], {
       developmentMode: !environment.production
     }),
-    NgxsStoragePluginModule.forRoot()
+    NgxsStoragePluginModule.forRoot({ key: ['auth', 'layout'] })
   ],
   providers: [
     httpInterceptorProviders,

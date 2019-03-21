@@ -30,3 +30,17 @@ export class UploadImageAction {
   static readonly type = '[Auth] Upload Image';
   constructor(public image: File) {}
 }
+
+export class SearchUsersAction {
+  static readonly type = '[Auth] Search User';
+  constructor(public username: string) {}
+}
+
+export class AddFriendAction {
+  static readonly type = '[Auth] Add Friend';
+  constructor(public friend: IUser) {}
+}
+
+export class GetFriendsAction {
+  static readonly type = '[Auth] Get Friends';
+}

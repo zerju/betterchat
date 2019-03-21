@@ -22,6 +22,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ProfileModalComponent } from './profile-modal/profile-modal.component';
 import { MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
+import { AddFriendComponent } from './add-friend/add-friend.component';
+import { FriendListItemComponent } from './friend-list-item/friend-list-item.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 const COMPONENTS: any[] = [
   ToolbarComponent,
@@ -33,11 +36,13 @@ const COMPONENTS: any[] = [
   MessagesComponent,
   LoggedOutToolbarComponent,
   ProfileModalComponent,
-  ImageUploadComponent
+  ImageUploadComponent,
+  AddFriendComponent,
+  FriendListItemComponent
 ];
 
 @NgModule({
-  declarations: [COMPONENTS],
+  declarations: [COMPONENTS, SpinnerComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
@@ -58,7 +63,7 @@ const COMPONENTS: any[] = [
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [ProfileModalComponent, ImageUploadComponent],
+  entryComponents: [ProfileModalComponent, ImageUploadComponent, AddFriendComponent],
   exports: [COMPONENTS]
 })
 export class ComponentsModule {}

@@ -1,0 +1,39 @@
+<div class="app-dialog">
+  <h2 mat-dialog-title>Add a friend</h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="search">
+      <mat-form-field>
+        <input
+          [formControl]="usernameControl"
+          matInput
+          placeholder="Friend username"
+          type="text"
+          name="friend-username"
+        />
+      </mat-form-field>
+      <button (click)="searchUsers.next(usernameControl.value)" mat-raised-button>Search</button>
+    </div>
+    <div class="found-friends">
+      <div *ngFor="let friend of foundUsers" class="friend-item">
+        <app-friend-list-item class="friend-info" [friend]="friend"></app-friend-list-item>
+        <button
+          (click)="onAddFriend(friend)"
+          *ngIf="!friend.isFriend && !addingIds.includes(friend.id)"
+          matTooltip="Add friend"
+          mat-icon-button
+        >
+          <mat-icon>person_add</mat-icon>
+        </button>
+        <app-spinner
+          class="spinner"
+          *ngIf="addingIds.includes(friend.id)"
+          [sizePx]="20"
+        ></app-spinner>
+        <mat-icon matTooltip="Friend already added" *ngIf="friend.isFriend">check</mat-icon>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</div>
