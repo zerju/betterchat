@@ -50,7 +50,7 @@ export class JwtInterceptor implements HttpInterceptor {
         (err: any) => {
           if (err instanceof HttpErrorResponse) {
             if (err.status === 401) {
-              this._store.dispatch(new LogoutUserAction());
+              this._store.dispatch(new LogoutUserAction(''));
             }
           }
         }

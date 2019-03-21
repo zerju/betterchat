@@ -1,6 +1,6 @@
 import { IJwtResponse } from './../models/jwt-response.model';
 import { LogoutUserAction, UpdateUserAction, UploadImageAction } from './../actions/auth.action';
-import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { State, Action, StateContext, Selector, Store } from '@ngxs/store';
 import { IUser } from '../models/user.model';
 import { RegisteruserAction, LoginUserAction, GetSavedUserAction } from '../actions/auth.action';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -21,7 +21,12 @@ const API_URL = environment.apiUrl;
 // AUTH STATE OR USER STATE - BOTH IN THE SAME STATE
 @State<AuthStateModel>({ name: 'auth', defaults: { apiError: null, user: null } })
 export class AuthState {
-  constructor(private ngZone: NgZone, private http: HttpClient, private router: Router) {}
+  constructor(
+    private ngZone: NgZone,
+    private http: HttpClient,
+    private router: Router,
+    private store: Store
+  ) {}
 
   @Selector() static getUser(state: AuthStateModel) {
     return state.user;
@@ -66,7 +71,8 @@ export class AuthState {
           user.iat = jwt.iat;
           user.exp = jwt.exp;
           user.jwtToken = res.jwt;
-          context.patchState({ user, apiError: null });
+          context.patchState({ apiError: null });
+          this.store.dispatch(new GetSavedUserAction(user));
           this.ngZone.run(() => this.router.navigate(['']));
         }),
         catchError(err => {
@@ -87,18 +93,18 @@ export class AuthState {
   }
 
   @Action(LogoutUserAction)
-  LogoutUserAction(context: StateContext<AuthStateModel>) {
+  LogoutUserAction(context: StateContext<AuthStateModel>, action: LogoutUserAction) {
     const state = context.getState();
     this.http
-      .post(`${API_URL}/auth/logout`, { username: state.user.username })
+      .post(`${API_URL}/auth/logout`, { username: action.username })
       .pipe(
         tap(() => {
+          window.location.reload();
           this.ngZone.run(() => this.router.navigate(['auth', 'login']));
-          context.patchState({ user: null });
         }),
         catchError(err => {
+          window.location.reload();
           this.ngZone.run(() => this.router.navigate(['auth', 'login']));
-          context.patchState({ user: null });
           return of(err);
         })
       )
@@ -107,14 +113,19 @@ export class AuthState {
 
   @Action(UpdateUserAction)
   updateUser(context: StateContext<AuthStateModel>, action: UpdateUserAction) {
-    const state = context.getState();
     this.http
       .put<any>(`${API_URL}/user/update`, action.user)
       .pipe(
         tap(res => {
-          let user = { ...state.user };
-          user = { ...user, ...res.user };
-          return context.patchState({ user });
+          const state = context.getState();
+          const user = { ...state.user };
+
+          for (const key in res.user) {
+            user[key] = res.user[key];
+          }
+          this.store.dispatch(new GetSavedUserAction(user));
+          // context.setState({ ...state, user });
+          // context.patchState({ user });
         }),
         catchError(err => of(err))
       )
@@ -130,9 +141,11 @@ export class AuthState {
       .post<any>(`${API_URL}/user/avatar`, formData)
       .pipe(
         tap(user => {
-          let updatedUser = { ...state.user };
-          updatedUser = { ...updatedUser, ...user };
-          context.patchState({ user: updatedUser });
+          const updatedUser = { ...state.user };
+          for (const key in user) {
+            updatedUser[key] = user[key];
+          }
+          this.store.dispatch(new GetSavedUserAction(user));
         })
       )
       .subscribe();

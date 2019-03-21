@@ -3,7 +3,7 @@
     <button (click)="toggleSidenav()" mat-icon-button>
       <mat-icon>menu</mat-icon>
     </button>
-    <span>My Chat</span>
+    <span [routerLink]="['/']">My Chat</span>
   </div>
   <div fxLayoutGap="15px" fxLayoutAlign="center center" class="end">
     <button mat-icon-button [matMenuTriggerFor]="addMenu">
@@ -40,5 +40,5 @@
   </button>
   <button mat-menu-item>Settings</button>
   <button (click)="logout()" mat-menu-item>Logout</button>
-  <button mat-menu-item>About</button>
+  <button [routerLink]="['/about']" mat-menu-item>About</button>
 </mat-menu>

@@ -1,7 +1,7 @@
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgxsModule } from '@ngxs/store';
+import { NgxsModule, NGXS_PLUGINS } from '@ngxs/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +13,7 @@ import { PlatformState } from './core/state/platform.state';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthState } from './core/state/auth.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { logoutPlugin } from './core/plugins/logout.plugin';
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
@@ -31,7 +32,14 @@ export const httpInterceptorProviders = [
     }),
     NgxsStoragePluginModule.forRoot()
   ],
-  providers: [httpInterceptorProviders],
+  providers: [
+    httpInterceptorProviders,
+    {
+      provide: NGXS_PLUGINS,
+      useValue: logoutPlugin,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

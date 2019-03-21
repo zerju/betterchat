@@ -18,6 +18,7 @@ export class GetSavedUserAction {
 
 export class LogoutUserAction {
   static readonly type = '[Auth] Logout User';
+  constructor(public username: string) {}
 }
 
 export class UpdateUserAction {

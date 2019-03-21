@@ -23,7 +23,7 @@ export class ToolbarComponent {
   }
 
   logout() {
-    this.store.dispatch(new LogoutUserAction());
+    this.store.dispatch(new LogoutUserAction(this.me.username));
   }
 
   toggleUserVisibility() {

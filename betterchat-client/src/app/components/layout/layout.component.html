@@ -1,6 +1,14 @@
-<app-toolbar (openProfileModal)="openProfileModal()" [me]="user$ | async"></app-toolbar>
+<app-toolbar
+  *ngIf="(user$ | async)"
+  (openProfileModal)="openProfileModal()"
+  [me]="user$ | async"
+></app-toolbar>
+<app-logged-out-toolbar *ngIf="!(user$ | async)" pageName="About"></app-logged-out-toolbar>
 <mat-sidenav-container>
-  <mat-sidenav [mode]="onMobile ? 'over' : 'side'" [opened]="sidenavState$ | async"
+  <mat-sidenav
+    *ngIf="(user$ | async)"
+    [mode]="onMobile ? 'over' : 'side'"
+    [opened]="sidenavState$ | async"
     ><app-contact-list></app-contact-list
   ></mat-sidenav>
   <mat-sidenav-content><ng-content></ng-content></mat-sidenav-content>
