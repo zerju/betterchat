@@ -34,7 +34,9 @@ export class JwtInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     const token = this._store.selectSnapshot<string>((state: AppState) => {
-      return state.auth.user.jwtToken;
+      if (state.auth && state.auth.user) {
+        return state.auth.user.jwtToken;
+      }
     });
     req = req.clone({
       setHeaders: {

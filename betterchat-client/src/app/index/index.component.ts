@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { GetFriendsAction } from '../core/actions/auth.action';
 
 @Component({
   selector: 'app-index',
@@ -6,10 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-
-  constructor() { }
+  constructor(private store: Store) {}
 
   ngOnInit() {
+    this.store.dispatch(new GetFriendsAction());
   }
-
 }

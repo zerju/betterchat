@@ -15,7 +15,6 @@ export class AppComponent implements OnInit {
   constructor(private overlayContainer: OverlayContainer, private store: Store) {}
 
   ngOnInit() {
-    this.store.dispatch(new GetFriendsAction());
     this.themeClass = 'default-theme';
     document.body.classList.add(this.themeClass);
     const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
