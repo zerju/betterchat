@@ -8,6 +8,7 @@
   >
     <app-friend-list-item
       (friendSelected)="friendSelected.next($event)"
+      (removeFriend)="removeFriend.next($event)"
       class="friend-info"
       [friend]="friend"
     ></app-friend-list-item>

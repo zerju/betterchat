@@ -13,6 +13,8 @@ export class AddFriendComponent implements OnInit {
   searchUsers = new EventEmitter<string>();
   @Output()
   addFriend = new EventEmitter<IUser>();
+  @Output()
+  removeFriend = new EventEmitter<IUser>();
 
   addingIds = [];
 
@@ -20,6 +22,7 @@ export class AddFriendComponent implements OnInit {
   @Input()
   set foundUsers(users: IUser[]) {
     this._foundUsers = users;
+    console.log(users);
     this.addingIds = [];
   }
   get foundUsers(): IUser[] {

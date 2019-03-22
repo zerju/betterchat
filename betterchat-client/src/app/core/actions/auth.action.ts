@@ -44,3 +44,8 @@ export class AddFriendAction {
 export class GetFriendsAction {
   static readonly type = '[Auth] Get Friends';
 }
+
+export class RemoveFriendAction {
+  static readonly type = '[Auth] Remove Friend'
+  constructor(public friend: IUser) {}
+}

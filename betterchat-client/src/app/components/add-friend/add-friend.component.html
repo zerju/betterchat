@@ -15,7 +15,11 @@
     </div>
     <div class="found-friends">
       <div *ngFor="let friend of foundUsers" class="friend-item">
-        <app-friend-list-item class="friend-info" [friend]="friend"></app-friend-list-item>
+        <app-friend-list-item
+          (removeFriend)="removeFriend.next($event)"
+          class="friend-info"
+          [friend]="friend"
+        ></app-friend-list-item>
         <button
           (click)="onAddFriend(friend)"
           *ngIf="!friend.isFriend && !addingIds.includes(friend.id)"

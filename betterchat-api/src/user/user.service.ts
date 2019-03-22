@@ -155,4 +155,19 @@ export class UserService {
       .save(foundUser)
       .then(() => this.userRepository.save(foundFriend));
   }
+
+  async removeFriend(user: User, friend: User) {
+    try {
+      await this.relationshipRepository.delete({
+        relatedUserId: user,
+        relatingUserId: friend,
+      });
+      await this.relationshipRepository.delete({
+        relatedUserId: friend,
+        relatingUserId: user,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }

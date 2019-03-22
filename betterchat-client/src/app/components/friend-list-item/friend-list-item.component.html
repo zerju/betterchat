@@ -3,7 +3,6 @@
     <img [src]="friend.image | missingImage" />
     <p>{{ friend.username }}</p>
     <div
-      fxFlex="2"
       class="online-status"
       [ngStyle]="{ background: friend.isOnline ? 'green' : 'transparent' }"
     ></div>
@@ -11,7 +10,7 @@
   <button [matMenuTriggerFor]="friendMore" mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </div>
 <mat-menu #friendMore="matMenu">
-  <button mat-menu-item *ngIf="friend.isFriend">
+  <button (click)="removeFriend.next(friend)" mat-menu-item *ngIf="friend.isFriend">
     <mat-icon>person_add_disabled </mat-icon>Remove from contacts
   </button>
   <button mat-menu-item><mat-icon>perm_identity</mat-icon>Show profile</button>

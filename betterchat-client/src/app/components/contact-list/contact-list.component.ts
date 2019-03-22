@@ -14,6 +14,8 @@ export class ContactListComponent implements OnInit {
 
   @Output()
   friendSelected = new EventEmitter<IUser>();
+  @Output()
+  removeFriend = new EventEmitter<IUser>();
 
   constructor(private store: Store) {}
 

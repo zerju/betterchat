@@ -15,6 +15,7 @@ import {
   Get,
   Param,
   Res,
+  Delete,
 } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
@@ -121,7 +122,16 @@ export class UserController {
   async addFriend(@Body() friend, @Headers() head) {
     const jwt = head.authorization.split(' ')[1];
     const user = await this.userService.getUserByJwt(jwt);
-    await this.userService.addFriend(user, friend);
+    const friends: any = await this.userService.getFriends(user);
+    const found = friends.some(el => el.username === friend.username);
+    if (!found) {
+      await this.userService.addFriend(user, friend);
+    } else {
+      throw new HttpException(
+        'This person is already your friend',
+        HttpStatus.CONFLICT,
+      );
+    }
   }
 
   @UseGuards(AuthGuard())
@@ -132,5 +142,14 @@ export class UserController {
     const friends: any = await this.userService.getFriends(foundU);
     friends.map(friend => (friend.isFriend = true));
     return friends;
+  }
+
+  @UseGuards(AuthGuard())
+  @Delete('/friends/:username')
+  async removeFriend(@Param('username') username, @Headers() head) {
+    const friend = await this.userService.getUser(username);
+    const jwt = head.authorization.split(' ')[1];
+    const foundU = await this.userService.getUserByJwt(jwt);
+    await this.userService.removeFriend(foundU, friend);
   }
 }

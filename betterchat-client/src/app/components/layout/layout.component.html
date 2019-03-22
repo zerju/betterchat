@@ -10,7 +10,10 @@
     *ngIf="(user$ | async)"
     [mode]="onMobile ? 'over' : 'side'"
     [opened]="sidenavState$ | async"
-    ><app-contact-list [friends]="friends$ | async"></app-contact-list
+    ><app-contact-list
+      (removeFriend)="removeFriend($event)"
+      [friends]="friends$ | async"
+    ></app-contact-list
   ></mat-sidenav>
   <mat-sidenav-content><ng-content></ng-content></mat-sidenav-content>
 </mat-sidenav-container>
@@ -19,5 +22,6 @@
     [foundUsers]="foundUsers$ | async"
     (searchUsers)="searchUsers($event)"
     (addFriend)="addFriend($event)"
+    (removeFriend)="removeFriend($event)"
   ></app-add-friend>
 </ng-template>

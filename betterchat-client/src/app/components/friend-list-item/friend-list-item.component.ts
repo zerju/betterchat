@@ -13,6 +13,8 @@ export class FriendListItemComponent implements OnInit {
 
   @Output()
   friendSelected = new EventEmitter<IUser>();
+  @Output()
+  removeFriend = new EventEmitter<IUser>();
 
   constructor() {}
 

@@ -5,7 +5,8 @@ import {
   UploadImageAction,
   SearchUsersAction,
   AddFriendAction,
-  GetFriendsAction
+  GetFriendsAction,
+  RemoveFriendAction
 } from './../actions/auth.action';
 import { State, Action, StateContext, Selector, Store } from '@ngxs/store';
 import { IUser } from '../models/user.model';
@@ -203,7 +204,7 @@ export class AuthState {
   }
 
   @Action(GetFriendsAction)
-  getFriends(context: StateContext<AuthStateModel>, action: GetFriendsAction) {
+  getFriends(context: StateContext<AuthStateModel>) {
     this.http
       .get<any>(`${API_URL}/user/friends`)
       .pipe(
@@ -211,20 +212,30 @@ export class AuthState {
           context.patchState({ friends });
           const state = context.getState();
           if (state.foundUsers && state.foundUsers.length > 0) {
-            const foundUsers = [...state.foundUsers];
-            foundUsers.map(user => {
+            const foundNew = [];
+            state.foundUsers.map(user => {
               const u = { ...user };
               for (let i = 0; i < friends.length; i++) {
                 if (friends[i].username === user.username) {
                   u.isFriend = true;
                 }
               }
-              return u;
+              foundNew.push(u);
             });
+            context.patchState({ friends, foundUsers: foundNew });
+          } else {
+            context.patchState({ friends });
           }
-          context.patchState({ friends });
         })
       )
+      .subscribe();
+  }
+
+  @Action(RemoveFriendAction)
+  removeFriend(context: StateContext<AuthStateModel>, action: RemoveFriendAction) {
+    this.http
+      .delete(`${API_URL}/user/friends/${action.friend.username}`)
+      .pipe(tap(() => this.store.dispatch(new GetFriendsAction())))
       .subscribe();
   }
 }

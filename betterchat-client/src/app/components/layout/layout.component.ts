@@ -1,4 +1,8 @@
-import { SearchUsersAction, AddFriendAction } from './../../core/actions/auth.action';
+import {
+  SearchUsersAction,
+  AddFriendAction,
+  RemoveFriendAction
+} from './../../core/actions/auth.action';
 import { AddFriendComponent } from './../add-friend/add-friend.component';
 import { AppState } from './../../core/state/app.state';
 import { AuthState } from 'src/app/core/state/auth.state';
@@ -57,5 +61,8 @@ export class LayoutComponent implements OnInit {
 
   addFriend(friend: IUser) {
     this.store.dispatch(new AddFriendAction(friend));
+  }
+  removeFriend(friend: IUser) {
+    this.store.dispatch(new RemoveFriendAction(friend));
   }
 }
