@@ -22,6 +22,8 @@ export class UserService {
       delete user.id;
       const userToUpdate = { ...user };
       delete userToUpdate.username;
+      delete userToUpdate.createdAt;
+      delete userToUpdate.updatedAt;
       Object.keys(userToUpdate).forEach(
         key =>
           (userToUpdate[key] === undefined || userToUpdate[key] == null) &&

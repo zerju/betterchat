@@ -1,5 +1,7 @@
 <div class="dialog">
-  <h2 mat-dialog-title>Profile</h2>
+  <h2 mat-dialog-title>
+    Profile<span>[ {{ user.username }} ]</span>
+  </h2>
   <mat-dialog-content class="mat-typography">
     <form [formGroup]="profileForm">
       <div class="profile-section">
