@@ -21,7 +21,7 @@ import { UserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
 import { diskStorage } from 'multer';
-import { envVariables } from 'src/env-variables';
+import { envVariables } from '../env-variables';
 import { decode } from 'jsonwebtoken';
 
 @Controller('user')

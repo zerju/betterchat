@@ -1,10 +1,9 @@
 import { UserRelationship } from './../entity/user-relationship.entity';
-import { IUser } from './../interfaces/user.interface';
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository, Like } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entity/user.entity';
-import { UserSession } from 'src/entity/user-session.entity';
+import { User } from '../entity/user.entity';
+import { UserSession } from '../entity/user-session.entity';
 
 @Injectable()
 export class UserService {

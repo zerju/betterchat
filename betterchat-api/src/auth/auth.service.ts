@@ -1,13 +1,11 @@
-import { UserService } from './../user/user.service';
 import { IUserSession } from './../interfaces/user-session.interface';
-import { IUser } from './../interfaces/user.interface';
 import { IJwtPayload } from './../interfaces/jwt-payload.interface';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entity/user.entity';
-import { UserSession } from 'src/entity/user-session.entity';
+import { User } from '../entity/user.entity';
+import { UserSession } from '../entity/user-session.entity';
 
 @Injectable()
 export class AuthService {
