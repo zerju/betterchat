@@ -29,7 +29,7 @@ export class LayoutComponent implements OnInit {
   @Select(AuthState.getFoundUsers) foundUsers$: Observable<IUser[]>;
   @Select(AuthState.getFriendList) friends$: Observable<IUser[]>;
 
-  @ViewChild('addFriendModal')
+  @ViewChild('addFriendModal', { static: true })
   private _addFriendModal: TemplateRef<any>;
 
   onMobile: boolean;

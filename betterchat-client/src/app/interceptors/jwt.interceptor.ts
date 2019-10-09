@@ -34,6 +34,7 @@ export class JwtInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     const token = this._store.selectSnapshot<string>((state: AppState) => {
+      console.log(state.auth);
       if (state.auth && state.auth.user) {
         return state.auth.user.jwtToken;
       }

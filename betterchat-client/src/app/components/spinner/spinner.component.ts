@@ -9,7 +9,7 @@ export class SpinnerComponent implements OnInit {
   @Input()
   sizePx = 64;
 
-  @ViewChild('spinner')
+  @ViewChild('spinner', { static: true })
   spinner: ElementRef;
 
   constructor(private _renderer: Renderer2, private _element: ElementRef) {}

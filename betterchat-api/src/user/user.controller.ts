@@ -9,7 +9,6 @@ import {
   HttpException,
   Post,
   UseInterceptors,
-  FileInterceptor,
   UploadedFile,
   Headers,
   Get,
@@ -17,6 +16,7 @@ import {
   Res,
   Delete,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { UserDto } from './dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';

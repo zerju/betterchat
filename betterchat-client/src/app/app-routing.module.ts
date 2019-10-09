@@ -6,11 +6,11 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadChildren: './index/index.module#IndexModule',
+    loadChildren: () => import('./index/index.module').then(m => m.IndexModule),
     canActivate: [AuthGuard]
   },
-  { path: 'auth', loadChildren: './auth/auth.module#AuthModule' },
-  { path: 'about', loadChildren: './about/about.module#AboutModule' }
+  { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
+  { path: 'about', loadChildren: () => import('./about/about.module').then(m => m.AboutModule) }
 ];
 
 @NgModule({

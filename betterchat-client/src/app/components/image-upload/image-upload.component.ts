@@ -12,7 +12,7 @@ export class ImageUploadComponent implements OnInit {
   fileToUpload: File;
   closeDialog = false;
 
-  @ViewChild('previewImage')
+  @ViewChild('previewImage', { static: false })
   previewImage: ElementRef;
 
   constructor(private _renderer: Renderer2, private _store: Store) {}
