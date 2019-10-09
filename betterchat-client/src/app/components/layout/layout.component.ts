@@ -3,17 +3,15 @@ import {
   AddFriendAction,
   RemoveFriendAction
 } from './../../core/actions/auth.action';
-import { AddFriendComponent } from './../add-friend/add-friend.component';
-import { AppState } from './../../core/state/app.state';
-import { AuthState } from 'src/app/core/state/auth.state';
+import { AuthState } from '../../core/state/auth.state';
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { LayoutState } from '../../core/state/layout.state';
-import { PlatformState } from 'src/app/core/state/platform.state';
-import { GetPlatformAction } from 'src/app/core/actions/platfrom.action';
-import { CloseSidebar } from 'src/app/core/actions/layout.action';
-import { IUser } from 'src/app/core/models/user.model';
+import { PlatformState } from '../../core/state/platform.state';
+import { GetPlatformAction } from '../../core/actions/platfrom.action';
+import { CloseSidebar } from '../../core/actions/layout.action';
+import { IUser } from '../../core/models/user.model';
 import { MatDialog } from '@angular/material';
 import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
 

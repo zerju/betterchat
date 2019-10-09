@@ -1,4 +1,4 @@
-import { IUser } from 'src/app/core/models/user.model';
+import { IUser } from '../../core/models/user.model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CloseSidebar } from './../../core/actions/layout.action';

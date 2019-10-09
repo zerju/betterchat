@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IMessage } from 'src/app/core/models/message.model';
+import { IMessage } from '../../core/models/message.model';
 
 @Component({
   selector: 'app-messages',

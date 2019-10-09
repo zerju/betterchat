@@ -1,7 +1,7 @@
 import { LogoutUserAction, UpdateUserAction } from './../../core/actions/auth.action';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { ToggleSidebar } from 'src/app/core/actions/layout.action';
+import { ToggleSidebar } from '../../core/actions/layout.action';
 import { IUser } from '../../core/models/user.model';
 
 @Component({

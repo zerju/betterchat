@@ -1,5 +1,4 @@
-import { IUser } from 'src/app/core/models/user.model';
-import { IFriend } from './../../core/models/friend.model';
+import { IUser } from '../../core/models/user.model';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({

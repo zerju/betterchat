@@ -6,8 +6,8 @@ import { validatePassword } from './../../utils/validators/password.validator';
 import { Store, Select } from '@ngxs/store';
 import { RegisteruserAction } from './../../core/actions/auth.action';
 import { IRegisterUser } from './../../core/models/register-user.model';
-import { existEmailValidator } from 'src/app/utils/validators/email-exists.validator';
-import { AuthState } from 'src/app/core/state/auth.state';
+import { existEmailValidator } from '../../utils/validators/email-exists.validator';
+import { AuthState } from '../../core/state/auth.state';
 import { Observable } from 'rxjs';
 
 @Component({

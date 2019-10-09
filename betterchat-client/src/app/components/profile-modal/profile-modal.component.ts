@@ -5,11 +5,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IUser } from './../../core/models/user.model';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { existUsernameValidator } from './../../utils/validators/username-exists.validator';
 import { existEmailValidator } from './../../utils/validators/email-exists.validator';
-import { validatePassword } from 'src/app/utils/validators/password.validator';
-import { newPasswordValidator } from 'src/app/utils/validators/new-password.validator';
-import { otfCheckPasswordValidator } from 'src/app/utils/validators/otf-check-password.validator';
+import { validatePassword } from '../../utils/validators/password.validator';
+import { newPasswordValidator } from '../../utils/validators/new-password.validator';
+import { otfCheckPasswordValidator } from '../../utils/validators/otf-check-password.validator';
 import { Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 
