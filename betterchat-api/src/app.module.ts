@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { envVariables } from './env-variables';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { envVariables } from './env-variables';
     ServeStaticModule.forRoot({
       rootPath: envVariables.uploadsFolder,
     }),
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

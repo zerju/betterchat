@@ -14,5 +14,6 @@ import { UserSession } from '../entity/user-session.entity';
   ],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}
