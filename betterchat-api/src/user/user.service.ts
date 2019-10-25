@@ -1,3 +1,5 @@
+import { Socket } from './../entity/socket.entity';
+import { ISocketJWT } from './../interfaces/socket-jwt-interface';
 import { UserRelationship } from './../entity/user-relationship.entity';
 import { Injectable } from '@nestjs/common';
 import { Repository, Like } from 'typeorm';
@@ -14,6 +16,8 @@ export class UserService {
     private readonly sessionRepository: Repository<UserSession>,
     @InjectRepository(UserRelationship)
     private readonly relationshipRepository: Repository<UserRelationship>,
+    @InjectRepository(Socket)
+    private readonly socketRepository: Repository<Socket>,
   ) {}
 
   async updateUser(user: User): Promise<User> {
@@ -170,5 +174,36 @@ export class UserService {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  async setUserSocketId(socketIdJWT: ISocketJWT) {
+    const { socketId, jwt } = socketIdJWT;
+    const user = await this.getUserByJwt(jwt);
+    const socket = { id: socketId };
+    if (!user) {
+      return;
+    }
+    const foundUser = await this.userRepository.findOne(
+      { id: user.id },
+      {
+        relations: ['sockets'],
+      },
+    );
+    foundUser.sockets = [...foundUser.sockets, socket];
+    foundUser.sockets.push(socket);
+    await this.userRepository.save(foundUser);
+  }
+  async deleteUserSocket(socketId: string) {
+    return await this.socketRepository.delete({ id: socketId });
+  }
+
+  async getUserSockets(id: string) {
+    const foundUser = await this.userRepository.findOne(
+      { id },
+      {
+        relations: ['sockets'],
+      },
+    );
+    return foundUser.sockets;
   }
 }

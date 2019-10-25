@@ -1,3 +1,4 @@
+import { WebsocketService } from '../core/services/websocket.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -64,6 +65,7 @@ const COMPONENTS: any[] = [
     ReactiveFormsModule
   ],
   entryComponents: [ProfileModalComponent, ImageUploadComponent, AddFriendComponent],
-  exports: [COMPONENTS]
+  exports: [COMPONENTS],
+  providers: [WebsocketService]
 })
 export class ComponentsModule {}

@@ -1,3 +1,4 @@
+import { Socket } from './../entity/socket.entity';
 import { UserRelationship } from './../entity/user-relationship.entity';
 import { UserService } from './../user/user.service';
 import { envVariables } from '../env-variables';
@@ -15,7 +16,7 @@ const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, UserSession, UserRelationship]),
+    TypeOrmModule.forFeature([User, UserSession, UserRelationship, Socket]),
     passportModule,
     JwtModule.register({
       privateKey: envVariables.jwtSecret,

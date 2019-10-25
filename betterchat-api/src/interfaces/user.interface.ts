@@ -9,4 +9,5 @@ export interface IUser {
   jwtToken?: string;
   password?: string;
   sessions?: UserSession;
+  socketId?: string;
 }

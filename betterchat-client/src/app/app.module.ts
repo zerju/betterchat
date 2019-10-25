@@ -14,6 +14,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthState } from './core/state/auth.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { logoutPlugin } from './core/plugins/logout.plugin';
+import { MessageState } from './core/state/message.state';
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
@@ -27,7 +28,7 @@ export const httpInterceptorProviders = [
     AppRoutingModule,
     BrowserAnimationsModule,
     ComponentsModule,
-    NgxsModule.forRoot([LayoutState, PlatformState, AuthState], {
+    NgxsModule.forRoot([LayoutState, PlatformState, AuthState, MessageState], {
       developmentMode: !environment.production
     }),
     NgxsStoragePluginModule.forRoot({ key: ['auth.user', 'layout'] })

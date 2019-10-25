@@ -1,3 +1,4 @@
+import { Socket } from './socket.entity';
 import { UserSession } from './user-session.entity';
 import {
   Entity,
@@ -52,4 +53,10 @@ export class User {
   })
   @JoinColumn({ name: 'sessions' })
   sessions?: UserSession[];
+
+  @OneToMany(type => Socket, socket => socket.user, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'sockets' })
+  sockets?: Socket[];
 }

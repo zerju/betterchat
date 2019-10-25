@@ -55,9 +55,12 @@ export class AuthService {
         jwt,
         lastActivity: Date.now(),
       };
-      const foundUser = await this.userRepository.findOne(user, {
-        relations: ['sessions'],
-      });
+      const foundUser = await this.userRepository.findOne(
+        { id: user.id },
+        {
+          relations: ['sessions'],
+        },
+      );
       foundUser.sessions = [...foundUser.sessions, session];
       await this.userRepository.save(foundUser);
     } catch (err) {

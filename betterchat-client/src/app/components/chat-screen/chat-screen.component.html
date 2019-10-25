@@ -2,4 +2,4 @@
 <div class="messages">
   <app-messages></app-messages>
 </div>
-<app-chat-input-box></app-chat-input-box>
+<app-chat-input-box (sendMessage)="sendMessage($event)"></app-chat-input-box>

@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { envVariables } from './env-variables';
 import { MessagesModule } from './messages/messages.module';
+import { MessagesGateway } from './gateways/messages/messages.gateway';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { MessagesModule } from './messages/messages.module';
     MessagesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MessagesGateway],
 })
 export class AppModule {}

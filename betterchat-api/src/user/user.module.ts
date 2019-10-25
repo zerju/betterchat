@@ -1,3 +1,4 @@
+import { Socket } from './../entity/socket.entity';
 import { UserRelationship } from './../entity/user-relationship.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './../auth/auth.module';
@@ -10,7 +11,7 @@ import { UserSession } from '../entity/user-session.entity';
 @Module({
   imports: [
     AuthModule,
-    TypeOrmModule.forFeature([User, UserSession, UserRelationship]),
+    TypeOrmModule.forFeature([User, UserSession, UserRelationship, Socket]),
   ],
   controllers: [UserController],
   providers: [UserService],

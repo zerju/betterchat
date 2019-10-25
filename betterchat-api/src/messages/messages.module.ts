@@ -1,3 +1,4 @@
+import { Socket } from './../entity/socket.entity';
 import { UserSession } from './../entity/user-session.entity';
 import { User } from './../entity/user.entity';
 import { UserRelationship } from './../entity/user-relationship.entity';
@@ -14,7 +15,13 @@ import { MessagesService } from './messages.service';
   imports: [
     AuthModule,
     UserModule,
-    TypeOrmModule.forFeature([Message, User, UserSession, UserRelationship]),
+    TypeOrmModule.forFeature([
+      Message,
+      User,
+      UserSession,
+      UserRelationship,
+      Socket,
+    ]),
   ],
   controllers: [MessagesController],
   providers: [UserService, MessagesService],
