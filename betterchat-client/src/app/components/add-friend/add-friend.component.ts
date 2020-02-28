@@ -1,12 +1,12 @@
-import { IFriend } from './../../core/models/friend.model';
-import { IUser } from './../../core/models/user.model';
-import { FormControl } from '@angular/forms';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { IFriend } from "./../../core/models/friend.model";
+import { IUser } from "./../../core/models/user.model";
+import { FormControl } from "@angular/forms";
+import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
 
 @Component({
-  selector: 'app-add-friend',
-  templateUrl: './add-friend.component.html',
-  styleUrls: ['./add-friend.component.scss']
+  selector: "app-add-friend",
+  templateUrl: "./add-friend.component.html",
+  styleUrls: ["./add-friend.component.scss"]
 })
 export class AddFriendComponent implements OnInit {
   @Output()
@@ -22,7 +22,6 @@ export class AddFriendComponent implements OnInit {
   @Input()
   set foundUsers(users: IUser[]) {
     this._foundUsers = users;
-    console.log(users);
     this.addingIds = [];
   }
   get foundUsers(): IUser[] {

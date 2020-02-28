@@ -1,4 +1,4 @@
-import { IJwtResponse } from './../models/jwt-response.model';
+import { IJwtResponse } from "./../models/jwt-response.model";
 import {
   LogoutUserAction,
   UpdateUserAction,
@@ -7,18 +7,22 @@ import {
   AddFriendAction,
   GetFriendsAction,
   RemoveFriendAction
-} from './../actions/auth.action';
-import { State, Action, StateContext, Selector, Store } from '@ngxs/store';
-import { IUser } from '../models/user.model';
-import { RegisteruserAction, LoginUserAction, GetSavedUserAction } from '../actions/auth.action';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { tap, catchError } from 'rxjs/operators';
-import { environment } from './../../../environments/environment';
-import { of } from 'rxjs';
-import { Router } from '@angular/router';
-import { NgZone } from '@angular/core';
-import * as jwt_decode from 'jwt-decode';
-import { IFriend } from '../models/friend.model';
+} from "./../actions/auth.action";
+import { State, Action, StateContext, Selector, Store } from "@ngxs/store";
+import { IUser } from "../models/user.model";
+import {
+  RegisteruserAction,
+  LoginUserAction,
+  GetSavedUserAction
+} from "../actions/auth.action";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { tap, catchError } from "rxjs/operators";
+import { environment } from "./../../../environments/environment";
+import { of } from "rxjs";
+import { Router } from "@angular/router";
+import { NgZone } from "@angular/core";
+import * as jwt_decode from "jwt-decode";
+import { IFriend } from "../models/friend.model";
 
 export class AuthStateModel {
   user: IUser;
@@ -31,7 +35,7 @@ const API_URL = environment.apiUrl;
 
 // AUTH STATE OR USER STATE - BOTH IN THE SAME STATE
 @State<AuthStateModel>({
-  name: 'auth',
+  name: "auth",
   defaults: { apiError: null, user: null, friends: null, foundUsers: null }
 })
 export class AuthState {
@@ -68,7 +72,7 @@ export class AuthState {
       .pipe(
         tap(res => {
           context.patchState({ apiError: null });
-          this.ngZone.run(() => this.router.navigate(['auth', 'login']));
+          this.ngZone.run(() => this.router.navigate(["auth", "login"]));
         }),
         catchError(err => {
           if (err.error.message) {
@@ -96,7 +100,7 @@ export class AuthState {
           context.patchState({ apiError: null });
           this.store.dispatch(new GetSavedUserAction(user));
           this.store.dispatch(new GetFriendsAction());
-          this.ngZone.run(() => this.router.navigate(['']));
+          this.ngZone.run(() => this.router.navigate([""]));
         }),
         catchError(err => {
           if (err.error.message) {
@@ -111,23 +115,29 @@ export class AuthState {
   }
 
   @Action(GetSavedUserAction)
-  setUserData(context: StateContext<AuthStateModel>, action: GetSavedUserAction) {
+  setUserData(
+    context: StateContext<AuthStateModel>,
+    action: GetSavedUserAction
+  ) {
     context.patchState({ user: action.userData });
   }
 
   @Action(LogoutUserAction)
-  LogoutUserAction(context: StateContext<AuthStateModel>, action: LogoutUserAction) {
+  LogoutUserAction(
+    context: StateContext<AuthStateModel>,
+    action: LogoutUserAction
+  ) {
     const state = context.getState();
     this.http
       .post(`${API_URL}/auth/logout`, { username: action.username })
       .pipe(
         tap(() => {
-          window.location.reload();
-          this.ngZone.run(() => this.router.navigate(['auth', 'login']));
+          // window.location.reload();
+          this.ngZone.run(() => this.router.navigate(["auth", "login"]));
         }),
         catchError(err => {
-          window.location.reload();
-          this.ngZone.run(() => this.router.navigate(['auth', 'login']));
+          // window.location.reload();
+          this.ngZone.run(() => this.router.navigate(["auth", "login"]));
           return of(err);
         })
       )
@@ -156,14 +166,22 @@ export class AuthState {
   }
 
   @Action(UploadImageAction)
-  uploadImage(context: StateContext<AuthStateModel>, action: UploadImageAction) {
+  uploadImage(
+    context: StateContext<AuthStateModel>,
+    action: UploadImageAction
+  ) {
     const formData = new FormData();
     const state = context.getState();
-    formData.append('image', action.image);
+    formData.append("image", action.image);
     this.http
       .post<any>(`${API_URL}/user/avatar`, formData)
       .pipe(
-        tap(user => {
+        tap(res => {
+          const user = res.user;
+          const jwt = jwt_decode(res.jwt);
+          user.iat = jwt.iat;
+          user.exp = jwt.exp;
+          user.jwtToken = res.jwt;
           const updatedUser = { ...state.user };
           for (const key in user) {
             updatedUser[key] = user[key];
@@ -175,7 +193,10 @@ export class AuthState {
   }
 
   @Action(SearchUsersAction)
-  searchUsers(context: StateContext<AuthStateModel>, action: SearchUsersAction) {
+  searchUsers(
+    context: StateContext<AuthStateModel>,
+    action: SearchUsersAction
+  ) {
     this.http
       .get<any>(`${API_URL}/user/search/${action.username}`)
       .pipe(
@@ -232,7 +253,10 @@ export class AuthState {
   }
 
   @Action(RemoveFriendAction)
-  removeFriend(context: StateContext<AuthStateModel>, action: RemoveFriendAction) {
+  removeFriend(
+    context: StateContext<AuthStateModel>,
+    action: RemoveFriendAction
+  ) {
     this.http
       .delete(`${API_URL}/user/friends/${action.friend.username}`)
       .pipe(tap(() => this.store.dispatch(new GetFriendsAction())))

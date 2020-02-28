@@ -23,6 +23,7 @@ import * as fs from 'fs';
 import { diskStorage } from 'multer';
 import { envVariables } from '../env-variables';
 import { decode } from 'jsonwebtoken';
+import { Guid } from 'guid-typescript';
 
 @Controller('user')
 export class UserController {
@@ -77,7 +78,11 @@ export class UserController {
         },
         // Specify the file name
         filename: (req, file, cb) => {
-          cb(null, Date.now() + '-' + file.originalname);
+          const name = file.originalname;
+          const lastDot = name.lastIndexOf('.');
+          const ext = name.substring(lastDot);
+          const imageName = `${Guid.create()}${ext}`;
+          cb(null, imageName);
         },
       }),
     }),
@@ -96,7 +101,7 @@ export class UserController {
         }
       });
     }
-    return this.userService.prepareUserObject(updatedUser);
+    return { user: this.userService.prepareUserObject(updatedUser), jwt };
   }
 
   @Get('/avatar/:imgId')
