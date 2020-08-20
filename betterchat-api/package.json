@@ -30,7 +30,7 @@
     "@nestjs/typeorm": "^6.2.0",
     "@nestjs/websockets": "^6.8.4",
     "@types/socket.io": "^2.1.4",
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^5.0.0",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.10.1",
     "cors": "^2.8.5",
